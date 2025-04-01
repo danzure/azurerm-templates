@@ -1,4 +1,4 @@
-# azurerm-templates 
+# azurerm-templates
 
 Welcome to my personal `azurerm-templates` repository, the purpose of this repoisitory to showcase and provide examples of my own self-created terraform configuration files for various services within Microsoft Azure. The onfiguration files within this repo can be used as either a quickstart or deployed as part of a wider solution or infrastructure. 
 
@@ -9,11 +9,11 @@ To get started with any of the projects in this repository:
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/terraform-azure.git
+    git clone https://github.com/yourusername/azurerm-templates.git
     ```
 2. Navigate to the project directory:
     ```sh
-    cd terraform-azure/project-directory
+    cd azurerm-templates/project-directory
     ```
 3. Initialize Terraform:
     ```sh
