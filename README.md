@@ -1,4 +1,4 @@
-# Terraform-Azure 
+# azurerm-templates 
 
 Welcome to my personal `azurerm-templates` repository, the purpose of this repoisitory to showcase and provide examples of my own self-created terraform configuration files for various services within Microsoft Azure. The onfiguration files within this repo can be used as either a quickstart or deployed as part of a wider solution or infrastructure. 
 
