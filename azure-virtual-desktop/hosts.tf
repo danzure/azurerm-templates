@@ -22,7 +22,6 @@ resource "azurerm_network_interface" "host_nic" {
 resource "azurerm_windows_virtual_machine" "avd_host" {
   resource_group_name = azurerm_resource_group.avd_rg.name
   location            = azurerm_resource_group.avd_rg.location
-
   count                 = var.rdsh_count
   name                  = format("${var.prefix}-host-%03d", count.index + 1)
   network_interface_ids = ["${azurerm_network_interface.host_nic.*.id[count.index]}"]
@@ -31,8 +30,7 @@ resource "azurerm_windows_virtual_machine" "avd_host" {
   patch_assessment_mode = "ImageDefault"
   patch_mode            = "Manual"
 
-  enable_automatic_updates          = false
-  vm_agent_platform_updates_enabled = true
+  enable_automatic_updates = false
 
   admin_username = var.admin_username
   admin_password = var.admin_password

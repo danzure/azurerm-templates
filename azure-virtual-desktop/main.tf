@@ -52,8 +52,9 @@ resource "azurerm_virtual_desktop_host_pool" "avd_vdpool" {
 
   scheduled_agent_updates {
     enabled = true
+
     schedule {
-      day_of_week = "Saturday"
+      day_of_week = "Sunday"
       hour_of_day = 3
     }
   }

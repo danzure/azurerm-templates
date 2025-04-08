@@ -33,9 +33,19 @@ variable "envrionment" {
 }
 
 variable "workload" {
-  description = "The name of the workload or application for the AVD deployment"
+  description = "The name of the workload or application for the firewall deployment"
   type        = string
-  default     = "netsecurity"
+  default     = "infra"
+}
+
+variable "vnet_address_space" {
+  description = "value"
+  default = ["10.0.0.0/22"]
+}
+
+variable "fw_subnet_range" {
+  description = "value"
+  default = ["10.0.1.0/23"]
 }
 
 variable "tags" {
