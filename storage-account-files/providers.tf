@@ -5,12 +5,12 @@ terraform {
       version = "4.26.0"
     }
   }
-  
+
   # set the hashicorp HCP terraform organisation + workspace for remote state file (remove if unused)
   cloud {
-    organization = "danzure-org"
+    organization = "danzure-org" # specifiy your own organistation name
     workspaces {
-      name = "storage-account-files"
+      name = "storage-account-files" # specify your own workspace
     }
   }
 }

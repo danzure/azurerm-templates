@@ -26,7 +26,7 @@ To deploy the `storage-account-files` using this Terraform configuration, follow
 4. Customize the `variables.tf` file to suit your own envrionment(s)
 5. Run `terraform init` to initialize the configuration.
 6. Run `terraform plan` to review the planned changes.
-7. Run `terraform apply` to deploy the AVD solution.
+7. Run `terraform apply` to deploy the azure files solution.
 8. Troubleshoot & perform any additional required configuration.
 
 For more information please see the following: `https://developer.hashicorp.com/terraform/tutorials` & `https://learn.microsoft.com/en-us/azure/virtual-desktop/`

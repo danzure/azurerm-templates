@@ -64,5 +64,5 @@ variable "file_share_name" {
 # storage account quote
 variable "storage_account_quota" {
   description = "The amount of storage for the file share in GiB"
-  default = "100"
+  default = "10"
 }
