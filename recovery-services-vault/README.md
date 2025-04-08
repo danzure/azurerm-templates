@@ -6,22 +6,13 @@ This repository contains Terraform configurations for deploying `Recovery Servic
 
 Below is a detailed list of each file in this repository and its purpose:
 
-- **hosts.tf**: This file includes the configuration for the virtual machines host(s) that will be used for Azure Virtual Desktop. This includes the VM size, os-image, patching and other relevant settings. This also includes configuration of following VM extensions: 'AD Domain Join' + 'Host Pool Join'
-
-- **logs.tf**: This file contains configuration for an Log Analytics Workspace(LAW) for centralised data logging regarding user sessions, host performace, application useage & system events (Optional) 
-
 - **main.tf**: This file contains the main configuration of the primary resourcs for the Azure Virtual Desktop. This includes the avd resource group, hostpool, workspace & desktop application group(DAG) 
 
-- **network.tf**: This file contains the configuration for deploying a Virtual Network(VNET) & virtual subnet(SNET) in a seperate resource group.
-Deployment of a Network Security Group(NSG) + default RDP rule is also defined here. 
-
-- **outputs.tf**: This file defines the outputs of the Terraform configuration. It provides useful information about the deployed resources, such as IP addresses and resource IDs, which can be used for further configuration or integration.
+- **outputs.tf**: This file defines the outputs of the Terraform configuration. It provides useful information about the deployed resources which can be used for further configuration or integration.
 
 - **providers.tf**: This file specifies the providers required for the Terraform configuration. It includes the Azure provider and any other necessary providers for the deployment.
 
 - **README.md**: This file provides an overview of the repository and detailed information about each file and its purpose.
-
-- **storage.tf**: This file contains the configuration for two storage accounts, the first storage account for using FSLogix for roaming profile storage, the second for MSIX Application package storage.
 
 - **variables.tf**: This file contains the variable definitions used in the Terraform configuration. It allows for customization of the deployment by setting values for various parameters such as: location, workload/ application, size & tagging. Please see file for full list. 
 

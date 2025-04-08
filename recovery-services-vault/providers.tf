@@ -8,9 +8,9 @@ terraform {
   
   # set the hashicorp HCP terraform organisation + workspace for remote state file (remove if unused)
   cloud {
-    organization = "danzure-org"
+    organization = "danzure-org" # specifiy your own organistation name
     workspaces {
-      name = "recovery-services-vault"
+      name = "recovery-services-vault" # specify your own workspace
     }
   }
 }
@@ -20,7 +20,6 @@ provider "azurerm" {
   features {
     recovery_services_vaults {
       # additional vault service configuration
-      
     }
   }
 }
