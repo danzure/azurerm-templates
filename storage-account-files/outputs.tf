@@ -1,26 +1,20 @@
-# Get outputs for the resourceGroup 
-output "resourceGroupName" {
-    description = "Get resource group name"
-    value = azurerm_resource_group.resourceGroup.name
+output "rg_name_output" {
+  description = "value"
+  value = azurerm_resource_group.sa_resource_group.name
 }
 
-output "resourceGroupID" {
-    description = "Get resource group ID"
-    value = azurerm_resource_group.resourceGroup.id
+output "location_output" {
+  description = "value"
+  value = var.location
 }
 
-output "resourceGroupLocation" {
-    description = "Get resource group location"
-    value = azurerm_resource_group.resourceGroup.location
-}
-
-# Get outputs for the storageAccount 
-output "storageAccountName" {
+output "sa_name_output" {
   description = "value"
   value = azurerm_storage_account.storage_account.name
 }
 
-output "storageAccountLocation" {
-  description = "Get the storageAccount location"
-  value = azurerm_storage_account.storage_account.location
+output "fileshare_url_output" {
+  description = "value"
+  value = azurerm_storage_share.fileShare.url
 }
+
