@@ -38,21 +38,26 @@ variable "workload" {
   default     = "infra"
 }
 
-variable "vnet_address_space" {
-  description = "value"
-  default = ["10.0.0.0/22"]
-}
-
-variable "fw_subnet_range" {
-  description = "value"
-  default = ["10.0.1.0/23"]
-}
-
 variable "tags" {
   description = "The tags to be applied to resources"
   default = {
-    Envrionment = "Development"
-    Workload = "Infrastructure"
+    Envrionment = "Dev"
+    Workload = "Firewall"
     Deployment = "Terraform"
   }
+}
+
+variable "vnet_address_space" {
+  description = "value"
+  default = ["10.10.0.0/22"]
+}
+
+variable "data_subnet_range" {
+  description = "value"
+  default = ["10.10.0.0/24"]
+}
+
+variable "firewall_subnet_range" {
+  description = "value"
+  default = ["10.10.1.0/26"]
 }
