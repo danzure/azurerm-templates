@@ -107,7 +107,7 @@ variable "prefix" {
 variable "domain_ou_path" {
   description = "The OU the AVD machines will be joined too"
   type        = string
-  default     = "" # Enter the domain OU path here
+  default     = "" # [Enter the domain OU path here]
 }
 
 variable "instance_number" {
@@ -131,8 +131,8 @@ variable "domain_join_upn" {
 variable "domain_password" {
   description = "Password for the user to authenticate the join to the domain"
   type        = string
+  default     = "ChangeMe123!"
   sensitive   = true
-  default     = "ChangeMe123!" 
 }
 
 variable "admin_username" {
@@ -156,7 +156,7 @@ variable "avd_host_registration" {
 
 variable "rfc3339time" {
   description = "Host registration token expiration date & time"
-  default     = "2025-04-10T23:40:52Z" #
+  default     = "2025-04-20T23:40:52Z" # update the date/ time 
 }
 
 variable "storage_account_tags" {

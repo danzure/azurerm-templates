@@ -18,6 +18,10 @@ resource "azurerm_storage_account" "sa_fslogix" {
   account_kind             = "FileStorage"
 
   tags = var.storage_account_tags
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 # create the file share for fslogix profiles
@@ -34,7 +38,7 @@ resource "azurerm_storage_share" "fs_fslogix" {
   }
 }
 
-# Create storage account for MSIX applications
+# Create storage account for MSIX applications, remove if unaplicable 
 resource "azurerm_storage_account" "sa_msixapp" {
   resource_group_name = azurerm_resource_group.avd_rg.name
   location            = azurerm_resource_group.avd_rg.location

@@ -11,7 +11,7 @@ terraform {
   cloud {
     organization = "danzure-org"
     workspaces {
-      name = "azure-virtual-desktop"
+      name = "virtual-network"
     }
   }
 }
@@ -21,9 +21,4 @@ provider "azurerm" {
   features {
     
   }
-}
-
-# configure the 'random' provider
-provider "random" {
-  
 }
