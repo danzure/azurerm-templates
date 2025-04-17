@@ -12,8 +12,8 @@ locals {
     "southeastasia"  = "sea"  # South East Asia [Asia]
   }
 
-  # function to generate resource name using the envrionment, workload & location prefix
-  generate_resource_name = {
+  # funcation to generate the vnet & subnet names with location prefix
+  generate_network_name = {
     location    = local.location_abbr[var.location],
     envrionment = var.envrionment
     workload    = var.workload

@@ -43,6 +43,7 @@ variable "tags" {
   default = {
     Envrionment = "Dev"
     Workload = "Sandbox"
+    Deployment = "Terraform IaC"
   }
 }
 
