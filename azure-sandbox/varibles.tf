@@ -47,18 +47,6 @@ variable "tags" {
   }
 }
 
-variable "vnet_instance01" {
-  description = "value"
-  type = string
-  default = "001"
-}
-
-variable "vnet_instance02" {
-  description = "value"
-  type = string
-  default = "002"
-}
-
 variable "shared_vnet_name" {
   description = "value"
   type = string
