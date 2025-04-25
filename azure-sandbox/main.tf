@@ -13,23 +13,22 @@ resource "azurerm_resource_group" "sandbox_rg" {
   }
 }
 
-# get client configuration data
+# get client configuration data for 
 data "azurerm_client_config" "current" {
 }
 
-# deploy automation account
+# create an azure automation account
 resource "azurerm_automation_account" "sandbox_aa" {
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location = azurerm_resource_group.sandbox_rg.location
+  tags = var.tags
 
   name = format("aa-%s-%s-%s-001",
     local.generate_resource_name.envrionment,
     local.generate_resource_name.workload,
     local.generate_resource_name.location
   )
-  
-  sku_name = "Free" # [Basic, Free]
-  tags = var.tags
+  sku_name = "Basic" # [Basic, Free]
 
   depends_on = [ azurerm_resource_group.sandbox_rg ]
 }
@@ -53,7 +52,7 @@ resource "azurerm_key_vault" "sandbox_kv" {
   depends_on = [ azurerm_resource_group.sandbox_rg ]
 }
 
-# create an log analytics workspace
+# create an log analytics workspace (LAW)
 resource "azurerm_log_analytics_workspace" "sandbox_law" {
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location = azurerm_resource_group.sandbox_rg.location
@@ -65,8 +64,8 @@ resource "azurerm_log_analytics_workspace" "sandbox_law" {
     local.generate_resource_name.location
   )
   retention_in_days = 30
-  
+
   depends_on = [ azurerm_resource_group.sandbox_rg ]
 }
 
-# create a storage account 
+# create an azure storage account with file + blob storage

@@ -18,8 +18,5 @@ terraform {
 provider "azurerm" {
   # Configuration options for resources
   features {
-    recovery_services_vaults {
-      # additional vault service configuration
-    }
   }
 }

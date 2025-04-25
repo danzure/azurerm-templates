@@ -3,7 +3,6 @@ output "rg_name_output" {
   value = azurerm_resource_group.sandbox_rg.name
 }
 
-
 output "shared_vnet_name_output" {
   description = "outputs the name of the shared vnet"
   value = azurerm_virtual_network.shared_vnet.name

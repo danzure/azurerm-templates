@@ -39,16 +39,10 @@ variable "location" {
 }
 
 variable "tags" {
-  description = "value"
+  description = "Specifies the tags that will be applied to the resources"
   default = {
     Envrionment = "Dev"
     Workload = "Sandbox"
     Deployment = "Terraform IaC"
   }
-}
-
-variable "shared_vnet_name" {
-  description = "value"
-  type = string
-  default = "shared"
 }
