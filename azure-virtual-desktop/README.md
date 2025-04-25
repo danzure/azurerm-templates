@@ -29,16 +29,16 @@ Deployment of a Network Security Group(NSG) + default RDP rule is also defined h
 
 To deploy the `Azure Virtual Desktop` environment using this Terraform configuration, follow these steps:
 
-1. Clone this repository to your local machine.
-2. Install Terraform if you haven't already.
-3. Configure your Azure credentials.
-4. Customize the `variables.tf` file to suit your own envrionment(s)
+1. Install the Terraform CLI
+2. Create a clone of this repository to your local machine
+3. Login & configure your Azure credentials
+4. Customize the `variables.tf` file to suit your own envrionment. 
 5. Run `terraform init` to initialize the configuration.
-6. Run `terraform plan` to review the planned changes.
-7. Run `terraform apply` to deploy the AVD solution.
+6. Run `terraform plan` to review the planned changes. 
+7. Run `terraform apply` to deploy the Azure Sandbox
 8. Troubleshoot & perform any additional required configuration.
 
-For more information please see the following: `https://developer.hashicorp.com/terraform/tutorials` & `https://learn.microsoft.com/en-us/azure/virtual-desktop/`
+For more detailed information, please see the following: `https://developer.hashicorp.com/terraform/tutorials/azure-get-started/install-cli`, `https://developer.hashicorp.com/terraform/tutorials`, `https://learn.microsoft.com/en-us/azure/virtual-desktop/`
 
 ## Contributing
 
