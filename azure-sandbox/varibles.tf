@@ -12,7 +12,7 @@ locals {
     "southeastasia"  = "sea"  # South East Asia [Asia]
   }
 
-  # function to generate resource name using the envrionment, workload & location prefix
+  # function to generate resource name using the 'resourcetype-environment-application-location-instance' standard
   generate_resource_name = {
     location    = local.location_abbr[var.location],
     envrionment = var.envrionment
@@ -21,28 +21,28 @@ locals {
 }
 
 variable "envrionment" {
-  description = "Specifies the production level of the resources (d = dev/ p = prod), this will be added to the rg nam"
+  description = "Specifies the production environment, set to 'dev' by default (d= dev, u= uat, p= prod)"
   type        = string
   default     = "d"
 }
 
 variable "workload" {
-  description = "Specifies the workload or appliction for the resource group, this will be added to the rg name"
+  description = "Specifies name of the workload or application for the deployment"
   type        = string
   default     = "sandbox"
 }
 
 variable "location" {
-  description = "Specifies the location the resources will be deployed too, this will be added to the rg name"
+  description = "Specifies the azure region the resources will be deployed too"
   type        = string
-  default     = "uksouth"
+  default     = "westeurope"
 }
 
 variable "tags" {
-  description = "Specifies the tags that will be applied to the resources"
+  description = "Specifies the tags that will be applied resources"
   default = {
     Envrionment = "Dev"
-    Workload = "Sandbox"
-    Deployment = "Terraform IaC"
+    Workload = "AzureSandbox"
+    Deployment = "Terraform"
   }
 }
