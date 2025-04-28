@@ -20,12 +20,6 @@ locals {
   }
 }
 
-variable "location" {
-  description = "Specified the location the resources will be deployed too, this value will be added to the resource name"
-  type        = string
-  default     = "uksouth"
-}
-
 variable "envrionment" {
   description = "The production level of the resources (d = dev/ p = prod)"
   type        = string
@@ -38,26 +32,18 @@ variable "workload" {
   default     = "infra"
 }
 
+variable "location" {
+  description = "Specified the location the resources will be deployed too, this value will be added to the resource name"
+  type        = string
+  default     = "uksouth"
+}
+
 variable "tags" {
   description = "value"
   default = {
     Deployment = "Terraform"
-    Workload = "Infrastructure"
-    Environment = ""
+    Environment = "Dev"
+    ResourceOwner = "Username"
+    Workload = "AzureInfra"
   }
-}
-
-variable "instance_number" {
-  description = "value"
-  default = "001"
-}
-
-variable "vnet_address_space" {
-  description = "value"
-  default = "10.0.0.0/22"
-}
-
-variable "snet_address_prefix" {
-  description = "value"
-  default = "10.0.0.0/24"
 }
