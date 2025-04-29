@@ -29,7 +29,7 @@ variable "envrionment" {
 variable "workload" {
   description = "Specifies the workload or appliction for the resource(s)"
   type        = string
-  default     = "tfbkp"
+  default     = "azbkp"
 }
 
 variable "location" {
@@ -39,17 +39,12 @@ variable "location" {
 }
 
 variable "tags" {
-  description = "Specifies the tags that will be applied to resouces"
+  description = "value"
   default = {
+    Envrionment = "Dev"
+    Workload = "AzureBackup"
     Deployment = "Terraform"
-    Workload = "Backup"
-    Envrionment = "Development"
   }
-}
-
-variable "instance" {
-  description = "Specifies the instance number of the resource group"
-  default = "001"
 }
 
 variable "rsv_sku" {

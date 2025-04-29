@@ -1,6 +1,6 @@
 output "rsv_name_output" {
   description = "Outputs the name of the recovery services vault(s) to be deployed"
-  value = azurerm_recovery_services_vault.recovery_services_vault.name
+  value = azurerm_recovery_services_vault.rsv.name
 }
 
 output "location_output" {
@@ -30,5 +30,5 @@ output "immutability_output" {
 
 output "cross_region_restore_output" {
   description = "Outputs if cross region restore option is enabled or disabled"
-  value = azurerm_recovery_services_vault.recovery_services_vault.cross_region_restore_enabled
+  value = azurerm_recovery_services_vault.rsv.cross_region_restore_enabled
 }
