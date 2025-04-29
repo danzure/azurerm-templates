@@ -1,4 +1,4 @@
-# Azure Virtual Desktop Terraform Configuration
+# Recovery Services Vault Terraform Configuration
 
 This repository contains Terraform configurations for deploying `Recovery Services Vault`. The purpose of this repository is to provide an easy method for managing & deploying a complete Azure Virtual Desktop solution that contains all the nessacary resources to get started. Resources within this repository will be named dynamiclly using the following convention: `resourcetype-environment-application-location-instance` based on values listed in the `varibles.tf` file.
 
