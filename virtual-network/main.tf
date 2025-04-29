@@ -25,7 +25,7 @@ resource "azurerm_virtual_network" "infra_vnet" {
   depends_on    = [azurerm_resource_group.infra_rg]
 }
 
-# create a general data subnet 
+# create a general data subnet
 resource "azurerm_subnet" "data_snet" {
   name = format("snet-%s-%s-%s-001",
     local.generate_network_name.envrionment,
@@ -53,12 +53,12 @@ resource "azurerm_network_security_group" "infra_nsg" {
   depends_on = [ azurerm_resource_group.infra_rg, azurerm_subnet.data_snet ]
 }
 
-# associate the Network Security Group to the azure data subnet
+# associate the network security group to the azure data subnet
 resource "azurerm_subnet_network_security_group_association" "nsg_attach" {
   subnet_id                 = azurerm_subnet.data_snet.id
   network_security_group_id = azurerm_network_security_group.infra_nsg.id
 
-  depends_on = [ azurerm_subnet.data_snet ]
+  depends_on = [ azurerm_network_security_group.infra_nsg, azurerm_subnet.data_snet ]
 }
 
 # create public ip address (PIP) for the nat gateway
@@ -89,6 +89,8 @@ resource "azurerm_nat_gateway" "infra_ngw" {
     local.generate_network_name.location
   )
   idle_timeout_in_minutes = 10
+
+  depends_on = [ azurerm_resource_group.infra_rg, azurerm_public_ip.ngw_pip ]
 }
 
 # associate the public ip address to the the NAT Gateway
@@ -97,7 +99,7 @@ resource "azurerm_nat_gateway_public_ip_association" "ngw_pip_attach" {
   public_ip_address_id = azurerm_public_ip.ngw_pip.id
 }
 
-# associate the NAT Gateway 
+# associate the data subnet with the NAT Gateway
 resource "azurerm_subnet_nat_gateway_association" "snet_ngw_attach" {
   nat_gateway_id = azurerm_nat_gateway.infra_ngw.id
   subnet_id = azurerm_subnet.data_snet.id
