@@ -36,21 +36,41 @@ resource "azurerm_backup_policy_file_share" "rsv_file_bkp" {
   resource_group_name = azurerm_resource_group.rsv_rg.name
   recovery_vault_name = azurerm_recovery_services_vault.rsv.name
   name = "AzureFileBackup"
-
   timezone = "UTC"
 
   backup {
     frequency = "Daily"
     time = "23:00"
   }
-
   retention_daily {
-    count = 10
+    count = 7
   }
-
+  retention_weekly {
+    count = 4
+    weekdays = [ "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" ]
+  }
   retention_monthly {
-    count = 6
-    weekdays = [ "Sunday" ]
-    weeks    = [ "Last" ]
+    count = 3
+    weekdays = [ "Monday" ]
+    weeks    = [ "First" ]
+  }
+}
+
+resource "azurerm_backup_policy_vm" "rsv_vm_bkp" {
+  resource_group_name = azurerm_resource_group.rsv_rg.name
+  recovery_vault_name = azurerm_recovery_services_vault.rsv.name
+  name = "AzureVMBackup"
+  timezone = "UTC"
+
+  backup {
+    frequency = "Daily"
+    time = "23:00"
+  }
+  retention_daily {
+    count = 7
+  }
+  retention_weekly {
+    count = 4
+    weekdays = [ "Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday" ]
   }
 }
