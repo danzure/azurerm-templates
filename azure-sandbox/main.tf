@@ -1,4 +1,4 @@
-# create the resource group for the sandbox resources
+# deploy resource group 
 resource "azurerm_resource_group" "sandbox_rg" {
   name = format("rg-%s-%s-%s-001",
     local.generate_resource_name.envrionment,
@@ -9,11 +9,11 @@ resource "azurerm_resource_group" "sandbox_rg" {
   tags     = var.tags
 }
 
-# get the tenant id from the tenant_id_output to deployed azure key vault
+# get the tenant id from the tenant_id_output to deploy azure key vault
 data "azurerm_client_config" "current" {
 }
 
-# create an azure automation account resource
+# deploy automation account resource
 resource "azurerm_automation_account" "sandbox_aa" {
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location = azurerm_resource_group.sandbox_rg.location
@@ -29,7 +29,7 @@ resource "azurerm_automation_account" "sandbox_aa" {
   depends_on = [ azurerm_resource_group.sandbox_rg ]
 }
 
-# create an azure key vault resource
+# deploy key vault resource
 resource "azurerm_key_vault" "sandbox_kv" {
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location = azurerm_resource_group.sandbox_rg.location
@@ -48,7 +48,7 @@ resource "azurerm_key_vault" "sandbox_kv" {
   depends_on = [ azurerm_resource_group.sandbox_rg ]
 }
 
-# create an log analytics workspace (LAW) resource
+# deploy log analytics workspace 
 resource "azurerm_log_analytics_workspace" "sandbox_law" {
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location = azurerm_resource_group.sandbox_rg.location
@@ -64,4 +64,4 @@ resource "azurerm_log_analytics_workspace" "sandbox_law" {
   depends_on = [ azurerm_resource_group.sandbox_rg ]
 }
 
-# create an azure storage account with file + blob storage 
+# deploy storagae account resource

@@ -1,14 +1,20 @@
 # Azure Virtual Desktop Terraform Configuration
 
-This repository contains Terraform configuration for deploying an `Azure Sandbox` based on the architecture from the: <a href ="https://learn.microsoft.com/en-us/azure/architecture/guide/azure-sandbox/azure-sandbox">Azure Architecture Centre</a>. Azure Sandbox contains a collection of indipendant resources for configuring common services all contained within a single Azure subscription. Where possible, any resources deployed as part of this configuration will be named dynamiclly using the following name convention: `resourcetype-environment-application-location-instance` based on some of the values within the `varibles.tf` file.
+This repository contains Terraform configuration for deploying an `Azure Sandbox` based on the architecture from the: <a href ="https://learn.microsoft.com/en-us/azure/architecture/guide/azure-sandbox/azure-sandbox">Azure Architecture Centre</a>. Azure Sandbox is a collection of interdependant configurations for implimenting common Azure services all within a single Azure `Subscription`. Where possible, any resources deployed as part of this configuration will be named dynamiclly using the following name convention: `resourcetype-environment-application-location-instance` based on some of the values within the `varibles.tf` file. 
+
+## Please note: 
+Depending on your Azure offer & deployment region, deploying the full `Azure Sandbox`configuration can be expensive to run. It's heavily advised to edit the configuration based on your own requirements by commenting out unessacary configuration using block comments `/*` to start a block comment, then `*/` to finish a block comment or removing any of the `.tf` configuration completely. 
 
 ## Repository Structure
-
 Below is a detailed list of each file in this repository and its purpose:
 
-- **main.tf**: This file contains the main configuration of the primary resources for the `Azure Sandbox` including: Resource Group, Key Vault, log analytics & 
+- **compute.tf**: This file contains the configuration for the `Windows` & `Linux` jumpbox virtual machines
 
-- **network.tf**: This file contains the configuration for the network infrastructure
+- **connectivity**: This file contains the configuration for connectivity between resources, this includes the peering between `Virtual Networks` and `Private Endpoint`
+
+- **main.tf**: This file contains the main configuration of the primary resources including: `Resource Group`, `Key Vault`, `Log Analytics` & `Storage Account`
+
+- **network.tf**: This file contains the configuration for the network infrastructure 
 
 - **outputs.tf**: This file defines the outputs of the Terraform configuration. It provides useful information about the deployed resources
 
