@@ -1,5 +1,5 @@
 # deploy the azure firewall resource group
-resource "azurerm_resource_group" "resource_group" {
+resource "azurerm_resource_group" "firewall_rg" {
   name = format("rg-%s-%s-%s-001",
     local.generate_resource_name.envrionment,
     local.generate_resource_name.workload,

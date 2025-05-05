@@ -1,6 +1,7 @@
 resource "azurerm_virtual_network" "virtual_network" {
-  resource_group_name = azurerm_resource_group.resource_group.name
-  location = azurerm_resource_group.resource_group.location
+  resource_group_name = azurerm_resource_group.firewall_rg.name
+  location = azurerm_resource_group.firewall_rg.name 
+  tags = var.tags
 
   name = format("vnet-%s-%s-%s-001",
     local.generate_resource_name.envrionment,
@@ -11,7 +12,7 @@ resource "azurerm_virtual_network" "virtual_network" {
 }
 
 resource "azurerm_subnet" "data_subnet" {
-  resource_group_name = azurerm_resource_group.resource_group.name
+  resource_group_name = azurerm_resource_group.firewall_rg.name
   virtual_network_name = azurerm_virtual_network.virtual_network.name
 
   name = format("snet-%s-%s-%s-001",
@@ -23,7 +24,7 @@ resource "azurerm_subnet" "data_subnet" {
 }
 
 resource "azurerm_subnet" "firewall_subnet" {
-  resource_group_name = azurerm_resource_group.resource_group.name
+  resource_group_name = azurerm_resource_group.firewall_rg.name
   virtual_network_name = azurerm_virtual_network.virtual_network.name
 
   name = "AzureFirewallSubnet"
