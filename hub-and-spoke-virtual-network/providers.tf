@@ -3,7 +3,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "4.26.0"
+      version = "4.27.0"
     }
   }
 
@@ -11,7 +11,7 @@ terraform {
   cloud {
     organization = "danzure-org"
     workspaces {
-      name = "virtual-network"
+      name = "hub-and-spoke-virtual-network"
     }
   }
 }
@@ -19,6 +19,5 @@ terraform {
 # configure the Microsoft Azure Provider
 provider "azurerm" {
   features {
-    
   }
 }

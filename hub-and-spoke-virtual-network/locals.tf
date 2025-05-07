@@ -19,31 +19,3 @@ locals {
     workload    = var.workload
   }
 }
-
-variable "envrionment" {
-  description = "The production level of the resources (d = dev/ p = prod)"
-  type        = string
-  default     = "d"
-}
-
-variable "workload" {
-  description = "The name of the workload or application for the network deployment"
-  type        = string
-  default     = "infra"
-}
-
-variable "location" {
-  description = "Specified the location the resources will be deployed too, this value will be added to the resource name"
-  type        = string
-  default     = "uksouth"
-}
-
-variable "tags" {
-  description = "value"
-  default = {
-    Deployment = "Terraform"
-    Environment = "Dev"
-    ResourceOwner = "Username"
-    Workload = "AzureInfra"
-  }
-}
