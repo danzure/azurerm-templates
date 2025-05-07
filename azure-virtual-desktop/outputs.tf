@@ -11,7 +11,7 @@ output "workload_name_output" {
 
 output "production_level_output" {
   description = "Outputs the production level for the deployment (prod/ dev)"
-  value       = var.envrionment
+  value       = var.environment
 }
 
 output "location_output" {
