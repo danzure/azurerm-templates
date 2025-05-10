@@ -127,7 +127,7 @@ variable "avd_host_registration" {
 
 variable "rfc3339time" {
   description = "Host registration token expiration date & time"
-  default     = "2025-04-20T23:40:52Z" # update the date/ time 
+  default     = "2025-05-20T23:40:52Z" # update the registration date to be within 7 days
 }
 
 variable "storage_account_tags" {
