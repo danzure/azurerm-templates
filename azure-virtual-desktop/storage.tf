@@ -20,7 +20,7 @@ resource "azurerm_storage_account" "sa_fslogix" {
   tags = var.storage_account_tags
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -28,7 +28,7 @@ resource "azurerm_storage_account" "sa_fslogix" {
 resource "azurerm_storage_share" "fs_fslogix" {
   storage_account_id = azurerm_storage_account.sa_fslogix.id
 
-  name  = "fsl-profiles"
+  name  = "fslprofiles"
   quota = var.fsl_quota
 
   depends_on = [azurerm_storage_account.sa_fslogix]
@@ -57,7 +57,7 @@ resource "azurerm_storage_account" "sa_msixapp" {
 
 # create the file share for MSIX app attach
 resource "azurerm_storage_share" "fs_msixapp" {
-  name               = "msix-apps"
+  name               = "msixapps"
   quota              = var.msix_quota
   storage_account_id = azurerm_storage_account.sa_msixapp.id
 

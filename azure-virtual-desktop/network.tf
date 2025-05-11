@@ -1,10 +1,6 @@
 # create a resource group for network infrastructure
 resource "azurerm_resource_group" "network_rg" {
-  name = format("rg-%s-%s-%s-001",
-    local.generate_network_name.envrionment,
-    local.generate_network_name.workload,
-    local.generate_network_name.location
-  )
+  name = "rg-${format ("%s", local.generate_env_name.envrionment)}-${var.network_workload}-${format ("%s", local.generate_loc_name.location)}-${var.instance_number}"
   location = var.location
   tags     = var.network_tags
 
@@ -18,11 +14,7 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = azurerm_resource_group.network_rg.name
   location            = azurerm_resource_group.network_rg.location
 
-  name = format("vnet-%s-%s-%s-001",
-    local.generate_network_name.envrionment,
-    local.generate_network_name.workload,
-    local.generate_network_name.location
-  )
+  name = "vnet-${format ("%s", local.generate_env_name.envrionment)}-${var.network_workload}-${format ("%s", local.generate_loc_name.location)}-${var.instance_number}"
   address_space = [var.vnet_address_space]
   tags          = var.network_tags
   depends_on    = [azurerm_resource_group.network_rg]
@@ -30,13 +22,10 @@ resource "azurerm_virtual_network" "vnet" {
 
 # create a virtual subnet (SNET) for the azure virtual desktop
 resource "azurerm_subnet" "avd_subnet" {
-  name = format("snet-%s-%s-%s-001",
-    local.generate_network_name.envrionment,
-    local.generate_network_name.workload,
-    local.generate_network_name.location
-  )
   resource_group_name  = azurerm_resource_group.network_rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
+
+  name = "snet-${format ("%s", local.generate_env_name.envrionment)}-${var.network_workload}-${format ("%s", local.generate_loc_name.location)}-${var.instance_number}"
   address_prefixes     = [var.snet_address_prefix]
   depends_on           = [azurerm_virtual_network.vnet]
 }
@@ -46,12 +35,7 @@ resource "azurerm_network_security_group" "avd_nsg" {
   resource_group_name = azurerm_resource_group.avd_rg.name
   location            = azurerm_resource_group.avd_rg.location
 
-  name = format("nsg-%s-%s-%s-001",
-    local.generate_resource_name.envrionment,
-    local.generate_resource_name.workload,
-    local.generate_resource_name.location
-  )
-
+  name = "nsg-${format ("%s", local.generate_env_name.envrionment)}-${var.workload}-${format ("%s", local.generate_loc_name.location)}-${var.instance_number}"
   tags       = var.avd_tags
   depends_on = [azurerm_resource_group.avd_rg, azurerm_subnet.avd_subnet]
 }
@@ -87,11 +71,7 @@ resource "azurerm_public_ip" "ngw_pip" {
   resource_group_name = azurerm_resource_group.avd_rg.name
   location            = azurerm_resource_group.avd_rg.location
 
-  name = format("pip-%s-%s-%s-${var.instance_number}",
-    local.generate_resource_name.envrionment,
-    local.generate_resource_name.workload,
-    local.generate_resource_name.location
-  )
+  name = "pip-${format ("%s", local.generate_env_name.envrionment)}-${var.workload}-${format ("%s", local.generate_loc_name.location)}-${var.instance_number}"
   allocation_method = "Static"
   tags              = var.avd_tags
 
@@ -103,11 +83,7 @@ resource "azurerm_public_ip_prefix" "ngw_ippre" {
   resource_group_name = azurerm_resource_group.avd_rg.name
   location            = azurerm_resource_group.avd_rg.location
 
-  name = format("ippre%s%s%s${var.instance_number}",
-    local.generate_resource_name.envrionment,
-    local.generate_resource_name.workload,
-    local.generate_resource_name.location
-  )
+  name = "ippre-${format ("%s", local.generate_env_name.envrionment)}-${var.workload}-${format ("%s", local.generate_loc_name.location)}-${var.instance_number}"
   tags = var.avd_tags
   depends_on = [ azurerm_resource_group.avd_rg ]
 }
@@ -117,11 +93,7 @@ resource "azurerm_nat_gateway" "avd_ngw" {
   resource_group_name = azurerm_resource_group.avd_rg.name
   location            = azurerm_resource_group.avd_rg.location
 
-  name = format("ngw-%s-%s-%s-${var.instance_number}",
-    local.generate_resource_name.envrionment,
-    local.generate_resource_name.workload,
-    local.generate_resource_name.location
-  )
+  name = "ngw-${format ("%s", local.generate_env_name.envrionment)}-${var.workload}-${format ("%s", local.generate_loc_name.location)}-${var.instance_number}"
   idle_timeout_in_minutes = 10
   tags                    = var.avd_tags
 }

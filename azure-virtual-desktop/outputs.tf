@@ -1,21 +1,16 @@
 # output the name of the resource group
 output "rg_name" {
-  description = "Name of the resource group"
+  description = "Output the name of the AVD resource group"
   value       = azurerm_resource_group.avd_rg.name
 }
 
-output "workload_name_output" {
-  description = "Outputs the name of the application or worklaod specified"
-  value       = var.workload
-}
-
 output "production_level_output" {
-  description = "Outputs the production level for the deployment (prod/ dev)"
+  description = "Outputs the production level for the deployment [prod, uat, dev]"
   value       = var.environment
 }
 
 output "location_output" {
-  description = "Outputs the location the resources will be deployed too"
+  description = "Outputs the location for the deployment"
   value       = var.location
 }
 
@@ -24,19 +19,24 @@ output "vdpool_name_output" {
   value       = azurerm_virtual_desktop_host_pool.avd_vdpool.name
 }
 
+output "vpool_id_output" {
+  description = "Outputs the id of the hostpool"
+  value = azurerm_virtual_desktop_host_pool.avd_vdpool.id
+}
+
 output "vdws_name_output" {
   description = "Outputs the name of the avd workspace"
   value       = azurerm_virtual_desktop_workspace.avd_vdws.name
 }
 
-output "vdag_name" {
-  description = "Outputs the name of the virtual desktop application group (dag)"
-  value       = azurerm_virtual_desktop_application_group.avd_dag.name
+output "vdws_id_output" {
+  description = "Outputs the id of the virtual desktop workspace"
+  value = azurerm_virtual_desktop_workspace.avd_vdws.id
 }
 
-output "vnet_rg_name" {
-  description = "Outputs the name of the resurce group containing the virtual network"
-  value       = azurerm_resource_group.network_rg.name
+output "vdag_name_output" {
+  description = "Outputs the name of the virtual desktop application group (dag)"
+  value       = azurerm_virtual_desktop_application_group.avd_dag.name
 }
 
 output "vnet_address_space" {
@@ -47,21 +47,6 @@ output "vnet_address_space" {
 output "snet_address_prefix" {
   description = "Outputs the address space for the virtual subnet"
   value       = azurerm_subnet.avd_subnet.address_prefixes
-}
-
-output "ngw_ippre_name_output" {
-  description = "value"
-  value = azurerm_public_ip_prefix.ngw_ippre.name
-}
-
-output "ngw_pip_name_output" {
-  description = "value"
-  value = azurerm_public_ip.ngw_pip.name
-}
-
-output "ngw_name_output" {
-  description = "value"
-  value = azurerm_nat_gateway.avd_ngw.name
 }
 
 output "rd_host_count" {

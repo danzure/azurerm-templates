@@ -5,15 +5,27 @@ variable "location" {
 }
 
 variable "environment" {
-  description = "The production level of the resources (d = dev/ p = prod)"
+  description = "The production level of the resources"
   type        = string
-  default     = "d"
+  default     = "dev" # [dev, uat, prod]
 }
 
 variable "workload" {
   description = "The name of the workload or application for the AVD deployment"
   type        = string
   default     = "tfavd"
+}
+
+variable "rdsh_count" {
+  description = "Number of remote desktop session hosts to deploy"
+  type        = number
+  default     = 1
+}
+
+variable "network_workload" {
+  description = "Specifiy the workload name for the network resources"
+  type        = string
+  default     = "infra"
 }
 
 variable "avd_tags" {
@@ -29,12 +41,6 @@ variable "workspace_friendly_name" {
   description = "Friendly name for the azure virtual desktop workspace"
   type        = string
   default     = "Terraform AVD"
-}
-
-variable "network_workload" {
-  description = "Name of the workload for networking resources, this value will be added to the name of the resource"
-  type        = string
-  default     = "infra"
 }
 
 variable "vnet_address_space" {
@@ -56,11 +62,6 @@ variable "network_tags" {
     Workload    = "Infrastructure"
     Envrionment = "Dev"
   }
-}
-
-variable "rdsh_count" {
-  description = "Number of remote desktop session hosts to deploy"
-  default     = 1
 }
 
 variable "vm_size" {
