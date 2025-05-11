@@ -8,9 +8,11 @@ Below is a detailed list of each file in this repository and its purpose:
 
 - **hosts.tf**: This file includes the configuration for the virtual machines host(s) that will be used for Azure Virtual Desktop. This includes the VM size, os-image, patching and other relevant settings. This also includes configuration of following VM extensions: 'AD Domain Join' + 'Host Pool Join'
 
+- **locals.tf**: This file includes local functions. 
+
 - **logs.tf**: This file contains configuration for an Log Analytics Workspace(LAW) for centralised data logging regarding user sessions, host performace, application useage & system events (Optional) 
 
-- **main.tf**: This file contains the main configuration of the primary resourcs for the Azure Virtual Desktop. This includes the avd resource group, hostpool, workspace & desktop application group(DAG) 
+- **main.tf**: This file contains the main configuration of the primary resourcs for the Azure Virtual Desktop. This includes the avd resource group, hostpool, workspace & desktop application group (DAG) 
 
 - **network.tf**: This file contains the configuration for deploying a Virtual Network(VNET) & virtual subnet(SNET) in a seperate resource group.
 Deployment of a Network Security Group(NSG) + default RDP rule is also defined here. 
