@@ -1,23 +1,23 @@
 variable "envrionment" {
-  description = "The production level of the resources (d = dev/ p = prod)"
+  description = "The production level of the resources"
   type        = string
-  default     = "d"
+  default     = "development" # value entered here will be abbriviated to 'd' for dev and included in resource name, see locals.tf for more details
 }
 
 variable "workload" {
   description = "The name of the workload or application for the network deployment"
   type        = string
-  default     = "infra"
+  default     = "hubspoke"
 }
 
 variable "location" {
-  description = "Specified the location the resources will be deployed too"
+  description = "Specifies the deployment location for the resources"
   type        = string
-  default     = "uksouth"
+  default     = "uksouth" # value entered here will be abbriviated to 'uks' and then added to resource name, see locals.tf for more details
 }
 
 variable "hub_vnet_addess_space" {
-  description = "Specified the address space for the hub virtual network"
+  description = "Specifies the address space for the hub virtual network"
   type = list(string)
   default = [ "10.0.0.0/16" ]
 }
@@ -29,9 +29,9 @@ variable "hub_subnet_address_prefix" {
 }
 
 variable "spoke_count" {
-  description = "Specifies the number of spoke networks to deploy"
+  description = "Specifies the number of spoke virtual networks to create"
   type = number
-  default = "2" # change this value as required
+  default = "2" # change this value to 
   validation {
     condition = var.spoke_count >=0
     error_message = "The number of spokes must be zero or positive"
@@ -60,11 +60,23 @@ variable "spoke_subnet_new_bits" {
   default     = 1 # Creates /25 subnets from the /24 spoke VNets (24 + 1 = 25)
 }
 
+variable "spoke_workload" {
+  description = "Specifies the name of the spoke virtual networks resources"
+  type = string
+  default = "spoke"
+}
+
+variable "hub_workload" {
+  description = "Specifies the name of the central hub VNET resource"
+  type = string
+  default = "infrahub"
+}
+
 variable "tags" {
-  description = "value"
+  description = "Specifies the tags to be applied to resources"
   default = {
     Deployment = "Terraform"
-    Environment = "Dev"
-    Workload = "AzureInfra"
+    Workload = "Infrastructure"
+    Region = "UK South"
   }
 }
