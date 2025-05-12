@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source  = "hashicorp/azurerm"
       version = "4.14.0"
     }
   }
@@ -19,7 +19,7 @@ provider "azurerm" {
   # additional configuration options for resources
   features {
     resource_group {
-      
+
     }
   }
 }
