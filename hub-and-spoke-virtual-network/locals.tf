@@ -10,18 +10,18 @@ locals {
     "australiaeast"  = "aue"  # Australia East [Asia]
     "japaneast"      = "jpe"  # Japan East [Asia]
     "southeastasia"  = "sea"  # South East Asia [Asia]
-    # ---- add any addtional regions here following above format ---- #
+    # <add any additional regions here>
   }
   # funcation to generate the location abbriviation
   generate_loc_name = {
-    location    = local.location_abbr[var.location]
+    location = local.location_abbr[var.location]
   }
 }
 
 locals {
   envrionment_abbr = {
-    "production" = "p"
-    "uat" = "u"
+    "production"  = "p"
+    "uat"         = "u"
     "development" = "d"
   }
   # function to generate the envrionment abbriviation 

@@ -18,32 +18,32 @@ variable "location" {
 
 variable "hub_vnet_addess_space" {
   description = "Specifies the address space for the hub virtual network"
-  type = list(string)
-  default = [ "10.0.0.0/16" ]
+  type        = list(string)
+  default     = ["10.0.0.0/16"]
 }
 
 variable "hub_subnet_address_prefix" {
   description = "Specifies the address prefix for the hub subent"
-  type = string
-  default = "10.0.1.0/24"
+  type        = string
+  default     = "10.0.1.0/24"
 }
 
 variable "spoke_count" {
   description = "Specifies the number of spoke virtual networks to create"
-  type = number
-  default = "2" # change this value to 
+  type        = number
+  default     = "2" # change this value to 
   validation {
-    condition = var.spoke_count >=0
+    condition     = var.spoke_count >= 0
     error_message = "The number of spokes must be zero or positive"
   }
 }
 
 variable "spoke_vnet_address_space_cidr" {
   description = "Base CIDR block that the address space for each spoke network will be calculated from"
-  type = string
-  default = "10.1.0.0/16"
+  type        = string
+  default     = "10.1.0.0/16"
   validation {
-    condition = tonumber(split("/", var.spoke_vnet_address_space_cidr)[1]) >= 1 && tonumber(split("/", var.spoke_vnet_address_space_cidr)[1]) <= 31
+    condition     = tonumber(split("/", var.spoke_vnet_address_space_cidr)[1]) >= 1 && tonumber(split("/", var.spoke_vnet_address_space_cidr)[1]) <= 31
     error_message = "The base address space must have a valid CIDR prefix length (1-31)."
   }
 }
@@ -62,21 +62,21 @@ variable "spoke_subnet_new_bits" {
 
 variable "spoke_workload" {
   description = "Specifies the name of the spoke virtual networks resources"
-  type = string
-  default = "spoke"
+  type        = string
+  default     = "spoke"
 }
 
 variable "hub_workload" {
   description = "Specifies the name of the central hub VNET resource"
-  type = string
-  default = "infrahub"
+  type        = string
+  default     = "infrahub"
 }
 
 variable "tags" {
   description = "Specifies the tags to be applied to resources"
   default = {
     Deployment = "Terraform"
-    Workload = "Infrastructure"
-    Region = "UK South"
+    Workload   = "Infrastructure"
+    Region     = "UK South"
   }
 }
