@@ -45,7 +45,7 @@ resource "azurerm_storage_account" "sa_msixapp" {
 
   name                     = "samsixapp${random_string.sa_random_string.id}"
   account_replication_type = "LRS"
-  account_tier             = "Premium" 
+  account_tier             = "Premium"
   account_kind             = "FileStorage"
 
   tags = var.storage_account_tags

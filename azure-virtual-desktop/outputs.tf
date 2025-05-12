@@ -21,7 +21,7 @@ output "vdpool_name_output" {
 
 output "vpool_id_output" {
   description = "Outputs the id of the hostpool"
-  value = azurerm_virtual_desktop_host_pool.avd_vdpool.id
+  value       = azurerm_virtual_desktop_host_pool.avd_vdpool.id
 }
 
 output "vdws_name_output" {
@@ -31,7 +31,7 @@ output "vdws_name_output" {
 
 output "vdws_id_output" {
   description = "Outputs the id of the virtual desktop workspace"
-  value = azurerm_virtual_desktop_workspace.avd_vdws.id
+  value       = azurerm_virtual_desktop_workspace.avd_vdws.id
 }
 
 output "vdag_name_output" {

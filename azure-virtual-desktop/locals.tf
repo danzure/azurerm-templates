@@ -14,16 +14,16 @@ locals {
   }
   # funcation to generate the location abbriviation
   generate_loc_name = {
-    location    = local.location_abbr[var.location]
+    location = local.location_abbr[var.location]
   }
 }
 
 # create local map of envrionemt abbriviations
 locals {
   envrionment_abbr = {
-    "prod" = "p" 
-    "uat" = "u"
-    "dev" = "d"
+    "prod" = "p"
+    "uat"  = "u"
+    "dev"  = "d"
   }
   # function to generate the envrionment abbriviation 
   generate_env_name = {

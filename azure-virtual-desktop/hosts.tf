@@ -20,8 +20,8 @@ resource "azurerm_network_interface" "host_nic" {
 
 # create the azure virtual machine host(s)
 resource "azurerm_windows_virtual_machine" "avd_host" {
-  resource_group_name = azurerm_resource_group.avd_rg.name
-  location            = azurerm_resource_group.avd_rg.location
+  resource_group_name   = azurerm_resource_group.avd_rg.name
+  location              = azurerm_resource_group.avd_rg.location
   count                 = var.rdsh_count
   name                  = format("${var.prefix}-host-%03d", count.index + 1)
   network_interface_ids = ["${azurerm_network_interface.host_nic.*.id[count.index]}"]
@@ -93,11 +93,11 @@ resource "azurerm_virtual_machine_extension" "domain_join" {
   type                        = "JsonADDomainExtension"
   type_handler_version        = "1.3"
   automatic_upgrade_enabled   = true
-  failure_suppression_enabled = true 
+  failure_suppression_enabled = true
 
-  depends_on = [ azurerm_windows_virtual_machine.avd_host ]
+  depends_on = [azurerm_windows_virtual_machine.avd_host]
 
-   settings = <<SETTINGS
+  settings = <<SETTINGS
     {
         "Name": "${var.domain_name}",
         "OUPath" "${var.domain_ou_path}",

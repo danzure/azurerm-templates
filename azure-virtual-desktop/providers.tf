@@ -19,11 +19,11 @@ terraform {
 # configure the Microsoft Azure Provider
 provider "azurerm" {
   features {
-    
+
   }
 }
 
 # configure the 'random' provider
 provider "random" {
-  
+
 }

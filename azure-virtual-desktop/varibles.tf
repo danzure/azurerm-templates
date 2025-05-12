@@ -1,31 +1,34 @@
+# The location, envrionmrnt & workload varibles will all be abbriviated and used in the resource naming convention listed below
+# <resourceType>-<envrionment>-<workload/application>-<location>-<instance>
+
 variable "location" {
-  description = "Specified the location the resources will be deployed too, this value will be added to the resource name"
+  description = "Specified the region deployment location"
   type        = string
   default     = "uksouth"
 }
 
 variable "environment" {
-  description = "The production level of the resources"
+  description = "Specify the production envrionment"
   type        = string
-  default     = "dev" # [dev, uat, prod]
+  default     = "dev" # possible options [dev, uat, prod]
 }
 
 variable "workload" {
-  description = "The name of the workload or application for the AVD deployment"
+  description = "The name of the workload/ application name for the Azure Virtual Desktop resources"
   type        = string
   default     = "tfavd"
 }
 
-variable "rdsh_count" {
-  description = "Number of remote desktop session hosts to deploy"
-  type        = number
-  default     = 1
-}
-
 variable "network_workload" {
-  description = "Specifiy the workload name for the network resources"
+  description = "Specifiy the workload/ application name for the virtual network resources"
   type        = string
   default     = "infra"
+}
+
+variable "rdsh_count" {
+  description = "Set the number of remote desktop session hosts to deploy"
+  type        = number
+  default     = 1 # default [1]
 }
 
 variable "avd_tags" {
@@ -84,8 +87,8 @@ variable "domain_ou_path" {
 
 variable "instance_number" {
   description = "The instance number of the resources (001, 002 ect.) this will be added at the end of the name"
-  type = string
-  default = "001"
+  type        = string
+  default     = "001"
 }
 
 variable "domain_name" {
