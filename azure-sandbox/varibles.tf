@@ -20,7 +20,7 @@ variable "tags" {
   description = "Specifies the tags that will be applied resources"
   default = {
     Envrionment = "Dev"
-    Workload = "AzureSandbox"
-    Deployment = "Terraform"
+    Workload    = "AzureSandbox"
+    Deployment  = "Terraform"
   }
 }
