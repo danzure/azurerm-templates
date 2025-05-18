@@ -26,6 +26,6 @@ locals {
   }
   # function to generate the envrionment abbriviation 
   generate_env_name = {
-    envrionment = local.envrionment_abbr[var.envrionment]
+    envrionment = local.envrionment_abbr[var.environment]
   }
 }

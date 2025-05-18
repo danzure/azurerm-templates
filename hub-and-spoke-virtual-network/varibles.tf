@@ -1,45 +1,57 @@
-variable "envrionment" {
-  description = "The production level of the resources"
+variable "bas_address_prefix" {
+  description = "The CIDR block for the Azure Bastion subnet (AzureBastionSubnet). Must be /26 or larger as per Azure requirements."
   type        = string
-  default     = "development" # value entered here will be abbriviated to 'd' for dev and included in resource name, see locals.tf for more details
+  default     = "10.0.0.192/26"
 }
 
-variable "workload" {
-  description = "The name of the workload or application for the network deployment"
+variable "environment" {
+  description = "The deployment environment (e.g., 'development', 'staging', 'production'). This value is used in resource naming conventions and may be abbreviated (e.g., 'development' to 'dev' - see locals.tf for specific abbreviation logic)."
   type        = string
-  default     = "hubspoke"
-}
-
-variable "location" {
-  description = "Specifies the deployment location for the resources"
-  type        = string
-  default     = "uksouth" # value entered here will be abbriviated to 'uks' and then added to resource name, see locals.tf for more details
-}
-
-variable "hub_vnet_addess_space" {
-  description = "Specifies the address space for the hub virtual network"
-  type        = list(string)
-  default     = ["10.0.0.0/16"]
+  default     = "development"
 }
 
 variable "hub_subnet_address_prefix" {
-  description = "Specifies the address prefix for the hub subent"
+  description = "The CIDR block for the primary subnet within the Hub Virtual Network (e.g., a subnet for shared services or gateway)."
   type        = string
   default     = "10.0.1.0/24"
 }
 
+variable "hub_vnet_address_space" {
+  description = "A list of CIDR blocks defining the address space for the Hub Virtual Network (e.g., [\"10.0.0.0/16\"])."
+  type        = list(string)
+  default     = ["10.0.0.0/16"]
+}
+
+variable "hub_workload" {
+  description = "A descriptive name or identifier for the Hub Virtual Network (e.g., 'core', 'shared'). This is often used as a component in resource naming for hub-specific resources."
+  type        = string
+  default     = "infrahub"
+}
+
+variable "location" {
+  description = "The Azure region where the resources will be deployed (e.g., 'uksouth', 'eastus'). This value is used in resource naming and may be abbreviated (e.g., 'uksouth' to 'uks' - see locals.tf for specific abbreviation logic)."
+  type        = string
+  default     = "uksouth"
+}
+
 variable "spoke_count" {
-  description = "Specifies the number of spoke virtual networks to create"
+  description = "The number of Spoke Virtual Networks to create and peer with the Hub VNet."
   type        = number
-  default     = "2" # change this value to 
+  default     = 2
   validation {
     condition     = var.spoke_count >= 0
-    error_message = "The number of spokes must be zero or positive"
+    error_message = "The number of spokes must be zero or a positive integer."
   }
 }
 
+variable "spoke_subnet_new_bits" {
+  description = "Number of additional bits to extend the prefix of each Spoke VNet's address space for its default subnet. For example, if a Spoke VNet is /24 and new_bits is 1, its default subnet will be /25."
+  type        = number
+  default     = 1 // Creates /25 subnets from the /24 spoke VNets (24 + 1 = 25)
+}
+
 variable "spoke_vnet_address_space_cidr" {
-  description = "Base CIDR block that the address space for each spoke network will be calculated from"
+  description = "The foundational CIDR block (e.g., '10.1.0.0/16') from which individual Spoke Virtual Network address spaces will be calculated using 'spoke_vnet_new_bits'."
   type        = string
   default     = "10.1.0.0/16"
   validation {
@@ -49,34 +61,28 @@ variable "spoke_vnet_address_space_cidr" {
 }
 
 variable "spoke_vnet_new_bits" {
-  description = "Number of additional bits to subnet the base address space for each Spoke VNet (e.g., 8 for /24 spokes from a /16 base)."
+  description = "Number of additional bits to extend the prefix of 'spoke_vnet_address_space_cidr' for each Spoke VNet. For example, if base is /16 and new_bits is 8, each spoke VNet will be a /24."
   type        = number
-  default     = 8 # Creates /24 networks from the /16 base (16 + 8 = 24)
-}
-
-variable "spoke_subnet_new_bits" {
-  description = "Number of additional bits to subnet each Spoke VNet's address space for its default subnet (e.g., 1 for a /25 subnet from a /24 VNet)."
-  type        = number
-  default     = 1 # Creates /25 subnets from the /24 spoke VNets (24 + 1 = 25)
+  default     = 8 // Creates /24 networks from the /16 base (16 + 8 = 24)
 }
 
 variable "spoke_workload" {
-  description = "Specifies the name of the spoke virtual networks resources"
+  description = "A descriptive name or identifier for the Spoke Virtual Networks (e.g., 'app', 'data'). This is often used as a component in resource naming for spoke-specific resources."
   type        = string
-  default     = "spoke"
-}
-
-variable "hub_workload" {
-  description = "Specifies the name of the central hub VNET resource"
-  type        = string
-  default     = "infrahub"
+  default     = "infraspoke"
 }
 
 variable "tags" {
-  description = "Specifies the tags to be applied to resources"
+  description = "A map of tags to apply to all created Azure resources. These tags help in organizing and managing resources."
+  type        = map(string)
   default = {
     Deployment = "Terraform"
-    Workload   = "Infrastructure"
-    Region     = "UK South"
+    Workload   = "Infrastructure" // This can be overridden or merged with more specific workload tags.
   }
+}
+
+variable "workload" {
+  description = "A descriptive name for the overall workload or application stack being deployed (e.g., 'ecommerce-app', 'shared-services'). This is used in resource naming and tagging for the entire deployment."
+  type        = string
+  default     = "hubspoke" // Defaulting to 'hubspoke' as this seems to be the pattern.
 }
