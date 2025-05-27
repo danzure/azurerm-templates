@@ -1,5 +1,5 @@
 variable "bas_address_prefix" {
-  description = "The CIDR block for the Azure Bastion subnet (AzureBastionSubnet). Must be /26 or larger as per Azure requirements."
+  description = "The CIDR block for the Azure Bastion subnet (AzureBastionSubnet). Must be /26 as per Azure requirements."
   type        = string
   default     = "10.0.0.192/26"
 }
@@ -8,6 +8,12 @@ variable "environment" {
   description = "The deployment environment (e.g., 'development', 'staging', 'production'). This value is used in resource naming conventions and may be abbreviated (e.g., 'development' to 'dev' - see locals.tf for specific abbreviation logic)."
   type        = string
   default     = "development"
+}
+
+variable "firewall_address_prefix" {
+  description = "The CIDR block for the Azure Firewall subnet (AzureFirewallSubnet). Must be /26 as per Azure requirements."
+  type        = string
+  default     = "10.0.0.128/26"
 }
 
 variable "hub_subnet_address_prefix" {
@@ -23,9 +29,9 @@ variable "hub_vnet_address_space" {
 }
 
 variable "hub_workload" {
-  description = "A descriptive name or identifier for the Hub Virtual Network (e.g., 'core', 'shared'). This is often used as a component in resource naming for hub-specific resources."
+  description = "A descriptive name or identifier for the Hub Virtual Network (e.g., 'hub', 'shared'). This is often used as a component in resource naming for hub-specific resources."
   type        = string
-  default     = "infrahub"
+  default     = "hub"
 }
 
 variable "location" {
@@ -35,9 +41,9 @@ variable "location" {
 }
 
 variable "spoke_count" {
-  description = "The number of Spoke Virtual Networks to create and peer with the Hub VNet."
+  description = "The number of spoke Virtual Networks to create and peer with the Hub VNet."
   type        = number
-  default     = 2
+  default     = 3 # Number of spokes to deploy
   validation {
     condition     = var.spoke_count >= 0
     error_message = "The number of spokes must be zero or a positive integer."
@@ -69,20 +75,23 @@ variable "spoke_vnet_new_bits" {
 variable "spoke_workload" {
   description = "A descriptive name or identifier for the Spoke Virtual Networks (e.g., 'app', 'data'). This is often used as a component in resource naming for spoke-specific resources."
   type        = string
-  default     = "infraspoke"
+  default     = "spoke"
 }
 
 variable "tags" {
   description = "A map of tags to apply to all created Azure resources. These tags help in organizing and managing resources."
   type        = map(string)
   default = {
-    Deployment = "Terraform"
-    Workload   = "Infrastructure" // This can be overridden or merged with more specific workload tags.
+    Deployment    = "Terraform"
+    Workload      = "hubspoke" 
+    Envrionment   = "Development"
+    CostCentre    = "Infrastructure"
+    ResourceOwner = "Username"
   }
 }
 
 variable "workload" {
-  description = "A descriptive name for the overall workload or application stack being deployed (e.g., 'ecommerce-app', 'shared-services'). This is used in resource naming and tagging for the entire deployment."
+  description = "A descriptive name for the overall workload or application stack being deployed (e.g., 'spoke', 'services'). This names the resource group"
   type        = string
-  default     = "hubspoke" // Defaulting to 'hubspoke' as this seems to be the pattern.
+  default     = "hubspoke"
 }

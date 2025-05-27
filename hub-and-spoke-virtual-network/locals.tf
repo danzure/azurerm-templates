@@ -1,4 +1,4 @@
-# create a local map of location abbriviations for some common azure regions
+# Define a local map for common Azure regions abbreviations
 locals {
   location_abbr = {
     "uksouth"        = "uks"  # UK South [Europe]
@@ -10,9 +10,10 @@ locals {
     "australiaeast"  = "aue"  # Australia East [Asia]
     "japaneast"      = "jpe"  # Japan East [Asia]
     "southeastasia"  = "sea"  # South East Asia [Asia]
-    # <add any additional regions here>
+    # [add any other azure regions as required]
   }
-  # funcation to generate the location abbriviation
+
+  # funcation to generate the location abbriviation using the local map
   generate_loc_name = {
     location = local.location_abbr[var.location]
   }
@@ -20,11 +21,11 @@ locals {
 
 locals {
   envrionment_abbr = {
-    "production"  = "p"
-    "uat"         = "u"
-    "development" = "d"
+    "production"  = "p" # Production envrionment
+    "uat"         = "u" # User Acceptance Testing (UAT) envrionment
+    "development" = "d" # Development envrionment
   }
-  # function to generate the envrionment abbriviation 
+  # function to generate the abbriviation for the azure region 
   generate_env_name = {
     envrionment = local.envrionment_abbr[var.environment]
   }

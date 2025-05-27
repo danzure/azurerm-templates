@@ -1,6 +1,6 @@
 output "bas_address_prefix" {
   description = "The name of the Azure Bastion subnet"
-  value       = azurerm_subnet.bastion_snet.address_prefixes
+  value       = azurerm_subnet.bas_hubsnet.address_prefixes
 }
 
 output "hub_vnet_id" {
@@ -11,11 +11,6 @@ output "hub_vnet_id" {
 output "hub_vnet_name" {
   description = "The name of the Hub Virtual Network."
   value       = azurerm_virtual_network.hub_vnet.name
-}
-
-output "hub_vnet_address_space" { # Corrected typo from addess_space
-  description = "The list of address spaces assigned to the Hub Virtual Network."
-  value       = azurerm_virtual_network.hub_vnet.address_space
 }
 
 output "hub_snet" {
