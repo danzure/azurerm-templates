@@ -83,7 +83,7 @@ variable "tags" {
   type        = map(string)
   default = {
     Deployment    = "Terraform"
-    Workload      = "hubspoke" 
+    Workload      = "hubspoke"
     Envrionment   = "Development"
     CostCentre    = "Infrastructure"
     ResourceOwner = "Username"
