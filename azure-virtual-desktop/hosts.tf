@@ -49,7 +49,6 @@ resource "azurerm_windows_virtual_machine" "avd_host" {
     sku       = "win11-24h2-avd"
     version   = "latest"
   }
-  depends_on = [azurerm_network_interface.host_nic, azurerm_virtual_desktop_host_pool.avd_vdpool]
 }
 
 # deploy the avd host pool registration vm extension to each host(s)
@@ -80,8 +79,6 @@ SETTINGS
   }
   
 PROTECTED_SETTINGS
-
-  depends_on = [azurerm_virtual_desktop_host_pool.avd_vdpool, azurerm_windows_virtual_machine.avd_host]
 }
 
 # deploy the domain join vm extention to each virtual machine host
@@ -95,26 +92,20 @@ resource "azurerm_virtual_machine_extension" "domain_join" {
   automatic_upgrade_enabled   = true
   failure_suppression_enabled = true
 
-  depends_on = [azurerm_windows_virtual_machine.avd_host]
 
   settings = <<SETTINGS
     {
-        "Name": "${var.domain_name}",
-        "OUPath" "${var.domain_ou_path}",
-        "User": "${var.domain_join_upn}@${var.domain_name}",
-        "Restart": "true",
-        "Options": "3"
+      "Name": "${var.domain_name}",
+      "OUPath": "${var.domain_ou_path}",
+      "User": "${var.domain_join_upn}@${var.domain_name}",
+      "Restart": "true",
+      "Options": "3"
     }
-
 SETTINGS
 
   protected_settings = <<PROTECTED_SETTINGS
     {
       "Password": "${var.domain_password}"
     }
-
 PROTECTED_SETTINGS
-  lifecycle {
-    ignore_changes = [settings, protected_settings]
-  }
 }

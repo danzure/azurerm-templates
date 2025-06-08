@@ -1,34 +1,22 @@
-# The location, envrionmrnt & workload varibles will all be abbriviated and used in the resource naming convention listed below
-# <resourceType>-<envrionment>-<workload/application>-<location>-<instance>
+# The location, environment & workload variables will all be abbreviated and used in the resource naming convention listed below
 
-variable "location" {
-  description = "Specified the region deployment location"
+variable "admin_password" {
+  description = "Local admin password for the AVD host(s)"
   type        = string
-  default     = "uksouth"
+  default     = "ChangeMe123!"
+  sensitive   = true
 }
 
-variable "environment" {
-  description = "Specify the production envrionment"
+variable "admin_username" {
+  description = "Local admin username for the AVD host(s)"
   type        = string
-  default     = "dev" # possible options [dev, uat, prod]
+  default     = "azureadmin"
 }
 
-variable "workload" {
-  description = "The name of the workload/ application name for the Azure Virtual Desktop resources"
+variable "avd_host_registration" {
+  description = "Variable to attach the virtual machine to the AVD host pool"
   type        = string
-  default     = "tfavd"
-}
-
-variable "network_workload" {
-  description = "Specifiy the workload/ application name for the virtual network resources"
-  type        = string
-  default     = "infra"
-}
-
-variable "rdsh_count" {
-  description = "Set the number of remote desktop session hosts to deploy"
-  type        = number
-  default     = 1 # default [1]
+  default     = "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_02-23-2022.zip"
 }
 
 variable "avd_tags" {
@@ -40,67 +28,22 @@ variable "avd_tags" {
   }
 }
 
-variable "workspace_friendly_name" {
-  description = "Friendly name for the azure virtual desktop workspace"
+variable "domain_join_upn" {
+  description = "The username for the account to join the domain"
   type        = string
-  default     = "Terraform AVD"
-}
-
-variable "vnet_address_space" {
-  description = "IP address space for the virtual network"
-  type        = string
-  default     = "10.10.0.0/22"
-}
-
-variable "snet_address_prefix" {
-  description = "IP address prefix for the AVD subnet"
-  type        = string
-  default     = "10.10.0.0/24"
-}
-
-variable "network_tags" {
-  description = "Tagging applied to network infrastructure resources"
-  default = {
-    Deployment  = "Terraform"
-    Workload    = "Infrastructure"
-    Envrionment = "Dev"
-  }
-}
-
-variable "vm_size" {
-  description = "Size of the virtual machine host(s)"
-  type        = string
-  default     = "Standard_B2s"
-}
-
-variable "prefix" {
-  description = "Prefix name for the name of the AVD host(s)"
-  type        = string
-  default     = "avdtf"
-}
-
-variable "domain_ou_path" {
-  description = "The OU the AVD machines will be joined too"
-  type        = string
-  default     = "" # [Enter the domain OU path here]
-}
-
-variable "instance_number" {
-  description = "The instance number of the resources (001, 002 ect.) this will be added at the end of the name"
-  type        = string
-  default     = "001"
+  default     = "domainjoinuser" # do not include the domain name, this is appended
 }
 
 variable "domain_name" {
-  description = "The domain the AVD host(s) will be joined too"
+  description = "The domain the AVD host(s) will be joined to"
   type        = string
   default     = "hosts.local"
 }
 
-variable "domain_join_upn" {
-  description = "The username for the account to join the domain"
+variable "domain_ou_path" {
+  description = "The OU the AVD machines will be joined to"
   type        = string
-  default     = "domainjoinuser" # do not include the domain name, this this appended
+  default     = "" # [Enter the domain OU path here]
 }
 
 variable "domain_password" {
@@ -110,28 +53,70 @@ variable "domain_password" {
   sensitive   = true
 }
 
-variable "admin_username" {
-  description = "local admin username for the avd host(s)"
+variable "environment" {
+  description = "Specify the production environment"
   type        = string
-  default     = "azureadmin"
+  default     = "dev" # possible options [dev, uat, prod]
 }
 
-variable "admin_password" {
-  description = "local admin password for the avd host(s)"
-  type        = string
-  default     = "ChangeMe123!"
-  sensitive   = true
+variable "fsl_quota" {
+  description = "Set the storage quota (GB) for the FSLogix file share"
+  default     = "5"
 }
 
-variable "avd_host_registration" {
-  description = "Varible to attach the virtual machine to the AVD host pool"
+variable "instance_number" {
+  description = "The instance number of the resources (001, 002 etc.) this will be added at the end of the name"
   type        = string
-  default     = "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_02-23-2022.zip"
+  default     = "001"
+}
+
+variable "location" {
+  description = "Specified the region deployment location"
+  type        = string
+  default     = "uksouth"
+}
+
+variable "msix_quota" {
+  description = "Set the storage quota (GB) for the FSLogix file share"
+  default     = "5"
+}
+
+variable "network_tags" {
+  description = "Tagging applied to network infrastructure resources"
+  default = {
+    Deployment  = "Terraform"
+    Workload    = "Infrastructure"
+    Environment = "Dev"
+  }
+}
+
+variable "network_workload" {
+  description = "Specify the workload/application name for the virtual network resources"
+  type        = string
+  default     = "infra"
+}
+
+variable "prefix" {
+  description = "Prefix name for the name of the AVD host(s)"
+  type        = string
+  default     = "avdtf"
+}
+
+variable "rdsh_count" {
+  description = "Set the number of remote desktop session hosts to deploy"
+  type        = number
+  default     = 1 # default [1]
 }
 
 variable "rfc3339time" {
   description = "Host registration token expiration date & time"
   default     = "2025-05-20T23:40:52Z" # update the registration date to be within 7 days
+}
+
+variable "snet_address_prefix" {
+  description = "IP address prefix for the AVD subnet"
+  type        = string
+  default     = "10.10.0.0/24"
 }
 
 variable "storage_account_tags" {
@@ -142,12 +127,26 @@ variable "storage_account_tags" {
   }
 }
 
-variable "fsl_quota" {
-  description = "Set the storage quota (GB) for the FSLogix file share"
-  default     = "5"
+variable "vm_size" {
+  description = "Size of the virtual machine host(s)"
+  type        = string
+  default     = "Standard_B2s"
 }
 
-variable "msix_quota" {
-  description = "Set the storage quota (GB) for the FSLogix file share"
-  default     = "5"
-} 
+variable "vnet_address_space" {
+  description = "IP address space for the virtual network"
+  type        = string
+  default     = "10.10.0.0/22"
+}
+
+variable "workload" {
+  description = "The name of the workload/application name for the Azure Virtual Desktop resources"
+  type        = string
+  default     = "tfavd"
+}
+
+variable "workspace_friendly_name" {
+  description = "Friendly name for the Azure Virtual Desktop workspace"
+  type        = string
+  default     = "Terraform AVD"
+}
