@@ -110,7 +110,7 @@ variable "rdsh_count" {
 
 variable "rfc3339time" {
   description = "Host registration token expiration date & time"
-  default     = "2025-05-20T23:40:52Z" # update the registration date to be within 7 days
+  default     = "2025-06-20T23:40:52Z" # update the registration date to be within 7 days
 }
 
 variable "snet_address_prefix" {
