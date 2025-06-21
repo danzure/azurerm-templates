@@ -6,7 +6,7 @@ terraform {
     }
   }
 
-  # set the hashicorp HCP terraform organisation + workspace for remote state file (remove if unused)
+  # set the hashicorp HCP terraform organisation + workspace for remote state file
   cloud {
     organization = "danzure-org" # specifiy your own organistation name
     workspaces {

@@ -57,8 +57,33 @@ resource "azurerm_virtual_network_peering" "app_vnet_peer" {
   }
 }
 
+resource "azurerm_private_link_service" "priv_link_serv" {
+  name                = "sandbox-privatelink"
+  resource_group_name = azurerm_resource_group.sandbox_rg.name
+  location            = azurerm_resource_group.sandbox_rg.location
+  nat_ip_configuration {
+    name      = "ip-configuration"
+    primary   = true
+    subnet_id = azurerm_subnet.privatelink_snet.id
+  }
+  load_balancer_frontend_ip_configuration_ids = []
+}
+
 # create files private endpoint for storage account
+resource "azurerm_private_endpoint" "sa_pe_storageacc" {
+  name                = ""
+  resource_group_name = azurerm_resource_group.sandbox_rg.name
+  location            = azurerm_resource_group.sandbox_rg.location
+  subnet_id           = azurerm_subnet.privatelink_snet.id
+
+  private_service_connection {
+    private_connection_resource_id = azurerm_private_link_service.priv_link_serv.id
+    name                           = "storage-privateendpointconnection"
+    is_manual_connection           = false
+  }
+}
 
 # create blob private endpoint for stroage account
+
 
 # create & mysql private endpoint
