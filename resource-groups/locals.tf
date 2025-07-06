@@ -12,10 +12,20 @@ locals {
     "southeastasia"  = "sea"  # South East Asia [Asia]
   }
 
-  # function to generate resource name using the envrionment, workload & location prefix
-  generate_resource_name = {
-    location    = local.location_abbr[var.location],
-    envrionment = var.envrionment
-    workload    = var.workload
+  # function to generate resource name using the 'resourcetype-environment-application-location-instance' standard
+  generate_loc_name = {
+    location = local.location_abbr[var.location]
+  }
+}
+
+locals {
+  environment_abbr = {
+    "prod" = "p" # Production envrionment
+    "uat"  = "u" # User Acceptance Testing (UAT) envrionment
+    "dev"  = "d" # Development envrionment
+  }
+  # function to generate the abbriviation for the azure region 
+  generate_env_name = {
+    envrionment = local.environment_abbr[var.environment]
   }
 }

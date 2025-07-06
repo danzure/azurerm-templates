@@ -1,13 +1,7 @@
 # create the resource group
-resource "azurerm_resource_group" "rg" {
-  count    = var.rg_count
+resource "azurerm_resource_group" "resource_group" {
+  name     = "rg-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-${format("%03d", count.index + 1)}"
   location = var.location
+  count    = var.rg_count
   tags     = var.resource_tags
-
-  name = format("rg-%s-%s-%s-%03d",
-    local.generate_resource_name.envrionment,
-    local.generate_resource_name.workload,
-    local.generate_resource_name.location,
-    count.index + 1
-  )
 }

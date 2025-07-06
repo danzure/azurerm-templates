@@ -1,31 +1,31 @@
-variable "envrionment" {
-  description = "Specifies the production level of the resources (d = dev/ p = prod), this will be added to the rg nam"
+variable "environment" {
+  description = "Specifies the deployment environment. Allowed values: 'prod', 'uat', or 'dev'."
   type        = string
-  default     = "d"
-}
-
-variable "workload" {
-  description = "Specifies the workload or appliction for the resource group, this will be added to the rg name"
-  type        = string
-  default     = "trfm"
+  default     = "dev" # [prod, uat, dev]
 }
 
 variable "location" {
-  description = "Specifies the location the resources will be deployed too, this will be added to the rg name"
+  description = "Azure region where resources will be deployed. This value is appended to the resource group name."
   type        = string
   default     = "uksouth"
 }
 
-variable "rg_count" {
-  description = "Specifies the number of resource groups to deploy"
-  default     = 1
-}
-
 variable "resource_tags" {
-  description = "Specifies the tags that will be applied to the resource group(s)"
+  description = "A map of tags to apply to all resource groups created by this module."
   default = {
     Deployment  = "IaC"
     Envrionment = "Dev"
     Workload    = "Terraform"
   }
+}
+
+variable "rg_count" {
+  description = "Number of resource groups to create."
+  default     = 1
+}
+
+variable "workload" {
+  description = "Name of the workload or application. This value is appended to the resource group name."
+  type        = string
+  default     = "trfm"
 }
