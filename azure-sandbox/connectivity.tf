@@ -71,7 +71,7 @@ resource "azurerm_private_link_service" "priv_link_serv" {
 
 # create files private endpoint for storage account
 resource "azurerm_private_endpoint" "sa_pe_storageacc" {
-  name                = ""
+  name                = "endpoint"
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location            = azurerm_resource_group.sandbox_rg.location
   subnet_id           = azurerm_subnet.privatelink_snet.id

@@ -12,8 +12,6 @@ resource "azurerm_automation_account" "sandbox_aa" {
   location            = azurerm_resource_group.sandbox_rg.location
   sku_name            = "Basic" # [Basic, Free]
   tags                = var.tags
-
-  depends_on = [azurerm_resource_group.sandbox_rg]
 }
 
 # deploy key vault resource
@@ -25,8 +23,6 @@ resource "azurerm_key_vault" "sandbox_kv" {
   sku_name                   = "standard" # [standard, premium]
   purge_protection_enabled   = false
   soft_delete_retention_days = 7
-
-  depends_on = [azurerm_resource_group.sandbox_rg]
 }
 
 # deploy log analytics workspace 
@@ -35,9 +31,6 @@ resource "azurerm_log_analytics_workspace" "sandbox_log" {
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location            = azurerm_resource_group.sandbox_rg.location
   tags                = var.tags
-
-  depends_on = [azurerm_resource_group.sandbox_rg]
 }
 
 # deploy storagae account resource
-

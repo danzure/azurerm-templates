@@ -37,8 +37,6 @@ resource "azurerm_public_ip" "bastion_pip" {
   sku                     = "Standard" # [Basic, Standard]
   allocation_method       = "Static"
   idle_timeout_in_minutes = 10
-
-  depends_on = [azurerm_virtual_network.shared_vnet]
 }
 
 # create the azure bastion host resource 
@@ -47,7 +45,6 @@ resource "azurerm_bastion_host" "bastion_host" {
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location            = azurerm_resource_group.sandbox_rg.location
   tags                = var.tags
-
 
   ip_configuration {
     name                 = "bas-ip-configuration"
@@ -62,7 +59,10 @@ resource "azurerm_bastion_host" "bastion_host" {
   shareable_link_enabled    = false   # [upgrade to standard before enabling this setting]
   session_recording_enabled = false   # [upgrade to standard sku to use this feature]
 
-  depends_on = [azurerm_subnet.bastion_subnet, azurerm_public_ip.bastion_pip]
+  depends_on = [
+    azurerm_subnet.bastion_subnet,
+    azurerm_public_ip.bastion_pip
+  ]
 }
 
 # create the public ip resource for azure firewall
@@ -123,8 +123,6 @@ resource "azurerm_subnet" "app_snet" {
   resource_group_name  = azurerm_resource_group.sandbox_rg.name
   virtual_network_name = azurerm_virtual_network.app_vnet.name
   address_prefixes     = var.app_snet_address_prefix
-
-  depends_on = [azurerm_virtual_network.app_vnet]
 }
 
 # create the database subnet
@@ -133,16 +131,12 @@ resource "azurerm_subnet" "db_snet" {
   resource_group_name  = azurerm_resource_group.sandbox_rg.name
   virtual_network_name = azurerm_virtual_network.app_vnet.name
   address_prefixes     = var.db_snet_address_prefix
-
-  depends_on = [azurerm_virtual_network.app_vnet]
 }
 
-# create the database subnet
+# create the private link subnet
 resource "azurerm_subnet" "privatelink_snet" {
   name                 = "snet-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-003"
   resource_group_name  = azurerm_resource_group.sandbox_rg.name
   virtual_network_name = azurerm_virtual_network.app_vnet.name
   address_prefixes     = var.privlink_snet_address_prefix
-
-  depends_on = [azurerm_virtual_network.app_vnet]
 }
