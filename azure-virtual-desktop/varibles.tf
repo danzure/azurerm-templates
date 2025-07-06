@@ -1,5 +1,3 @@
-# The location, environment & workload variables will all be abbreviated and used in the resource naming convention listed below
-
 variable "admin_password" {
   description = "Local administrator password for the Azure Virtual Desktop (AVD) host(s)."
   type        = string
@@ -110,7 +108,7 @@ variable "rdsh_count" {
 
 variable "rfc3339time" {
   description = "Expiration date and time (RFC3339 format) for the AVD host registration token."
-  default     = "2025-06-20T23:40:52Z" # update the registration date to be within 7 days
+  default     = "2025-07-20T23:40:52Z" # update the registration date to be within 7 days
 }
 
 variable "snet_address_prefix" {
