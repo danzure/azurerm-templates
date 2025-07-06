@@ -31,8 +31,6 @@ resource "azurerm_storage_share" "fs_fslogix" {
   name  = "fslprofiles"
   quota = var.fsl_quota
 
-  depends_on = [azurerm_storage_account.sa_fslogix]
-
   lifecycle {
     prevent_destroy = false
   }
@@ -60,6 +58,4 @@ resource "azurerm_storage_share" "fs_msixapp" {
   name               = "msixapps"
   quota              = var.msix_quota
   storage_account_id = azurerm_storage_account.sa_msixapp.id
-
-  depends_on = [azurerm_storage_account.sa_msixapp]
 }

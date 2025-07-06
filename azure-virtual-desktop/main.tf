@@ -46,15 +46,12 @@ resource "azurerm_virtual_desktop_host_pool" "avd_vdpool" {
       hour_of_day = 3
     }
   }
-  depends_on = [azurerm_resource_group.avd_rg]
 }
 
 # create the registration info for the hostpool
 resource "azurerm_virtual_desktop_host_pool_registration_info" "vdpool_registration" {
   hostpool_id     = azurerm_virtual_desktop_host_pool.avd_vdpool.id
   expiration_date = var.rfc3339time
-
-  depends_on = [azurerm_virtual_desktop_host_pool.avd_vdpool]
 }
 
 # create the azure virtal desktop application group (DAG)
@@ -68,14 +65,10 @@ resource "azurerm_virtual_desktop_application_group" "avd_dag" {
   description   = "${var.workload} Desktop Application Group"
   type          = "Desktop" #[RemoteApp, Desktop]
   tags          = var.avd_tags
-
-  depends_on = [azurerm_resource_group.avd_rg]
 }
 
 # associate the avd workspace + DAG to the configuration
 resource "azurerm_virtual_desktop_workspace_application_group_association" "vdws_dag_associate" {
   workspace_id         = azurerm_virtual_desktop_workspace.avd_vdws.id
   application_group_id = azurerm_virtual_desktop_application_group.avd_dag.id
-
-  depends_on = [azurerm_virtual_desktop_workspace.avd_vdws, azurerm_virtual_desktop_application_group.avd_dag]
 }

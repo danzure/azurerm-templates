@@ -17,7 +17,6 @@ resource "azurerm_virtual_network" "vnet" {
   name          = "vnet-${format("%s", local.generate_env_name.envrionment)}-${var.network_workload}-${format("%s", local.generate_loc_name.location)}-${var.instance_number}"
   address_space = [var.vnet_address_space]
   tags          = var.network_tags
-  depends_on    = [azurerm_resource_group.network_rg]
 }
 
 # create a virtual subnet (SNET) for the azure virtual desktop
@@ -27,7 +26,6 @@ resource "azurerm_subnet" "avd_subnet" {
 
   name             = "snet-${format("%s", local.generate_env_name.envrionment)}-${var.network_workload}-${format("%s", local.generate_loc_name.location)}-${var.instance_number}"
   address_prefixes = [var.snet_address_prefix]
-  depends_on       = [azurerm_virtual_network.vnet]
 }
 
 # create a network security group (NSG) for the azure virtual desktop envrionment
@@ -37,15 +35,12 @@ resource "azurerm_network_security_group" "avd_nsg" {
 
   name       = "nsg-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-${var.instance_number}"
   tags       = var.avd_tags
-  depends_on = [azurerm_resource_group.avd_rg, azurerm_subnet.avd_subnet]
 }
 
 # associate the Network Security Group (NSG) to the azure virtual desktop subnet
 resource "azurerm_subnet_network_security_group_association" "nsg_attach" {
   subnet_id                 = azurerm_subnet.avd_subnet.id
   network_security_group_id = azurerm_network_security_group.avd_nsg.id
-
-  depends_on = [azurerm_subnet.avd_subnet]
 }
 
 # create a default rdp rule for the network security group
@@ -62,8 +57,6 @@ resource "azurerm_network_security_rule" "nsg_rdp_rule" {
   destination_port_range     = "443"
   source_address_prefix      = "*"
   destination_address_prefix = "*"
-
-  depends_on = [azurerm_network_security_group.avd_nsg]
 }
 
 # create public ip address (PIP) for the nat gateway
@@ -74,8 +67,6 @@ resource "azurerm_public_ip" "ngw_pip" {
   name              = "pip-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-${var.instance_number}"
   allocation_method = "Static"
   tags              = var.avd_tags
-
-  depends_on = [azurerm_resource_group.avd_rg]
 }
 
 # create ip pirefix for NAT Gateway
@@ -85,7 +76,6 @@ resource "azurerm_public_ip_prefix" "ngw_ippre" {
 
   name       = "ippre-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-${var.instance_number}"
   tags       = var.avd_tags
-  depends_on = [azurerm_resource_group.avd_rg]
 }
 
 # create a NAT Gateway for outbound internet connectivity
