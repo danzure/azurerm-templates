@@ -70,8 +70,8 @@ resource "azurerm_private_link_service" "priv_link_serv" {
 }
 
 # create files private endpoint for storage account
-resource "azurerm_private_endpoint" "sa_pe_storageacc" {
-  name                = "endpoint"
+resource "azurerm_private_endpoint" "sa_files_endpoint" {
+  name                = "files-endpoint"
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location            = azurerm_resource_group.sandbox_rg.location
   subnet_id           = azurerm_subnet.privatelink_snet.id
@@ -84,6 +84,17 @@ resource "azurerm_private_endpoint" "sa_pe_storageacc" {
 }
 
 # create blob private endpoint for stroage account
+resource "azurerm_private_endpoint" "sa_blob_endpoint" {
+  name                = "blob-endpoint"
+  resource_group_name = azurerm_resource_group.sandbox_rg.name
+  location            = azurerm_resource_group.sandbox_rg.location
+  subnet_id           = azurerm_subnet.privatelink_snet.id
 
+  private_service_connection {
+    private_connection_resource_id = azurerm_private_link_service.priv_link_serv.id
+    name                           = "blog-privateendpointconnection"
+    is_manual_connection           = false
+  }
+}
 
 # create & mysql private endpoint

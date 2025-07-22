@@ -35,7 +35,7 @@ output "shared_vnet_name" {
 
 output "storage_account_name" {
   description = "Outputs the name of the storage account"
-  value       = azurerm_storage_account.sandbox_sa.name 
+  value       = azurerm_storage_account.sandbox_sa.name
 }
 
 output "tenant_id" {
