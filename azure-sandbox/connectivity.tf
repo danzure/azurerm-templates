@@ -92,9 +92,21 @@ resource "azurerm_private_endpoint" "sa_blob_endpoint" {
 
   private_service_connection {
     private_connection_resource_id = azurerm_private_link_service.priv_link_serv.id
-    name                           = "blog-privateendpointconnection"
+    name                           = "blog-privateendpoint"
     is_manual_connection           = false
   }
 }
 
-# create & mysql private endpoint
+# create mysql private endpoint
+resource "azurerm_private_endpoint" "mysql_endpoint" {
+  name                = "mysql-endpoint"
+  resource_group_name = azurerm_resource_group.sandbox_rg.name
+  location            = azurerm_resource_group.sandbox_rg.location
+  subnet_id           = azurerm_subnet.privatelink_snet.id
+
+  private_service_connection {
+    private_connection_resource_id = azurerm_private_link_service.priv_link_serv.id
+    name                           = "msql-privateendpoint"
+    is_manual_connection           = false
+  }
+}
