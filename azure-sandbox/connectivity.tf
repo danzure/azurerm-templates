@@ -95,6 +95,7 @@ resource "azurerm_private_endpoint" "sa_blob_endpoint" {
     name                           = "blog-privateendpoint"
     is_manual_connection           = false
   }
+  depends_on = [ azurerm_private_link_service.priv_link_serv ]
 }
 
 # create mysql private endpoint
@@ -109,4 +110,5 @@ resource "azurerm_private_endpoint" "mysql_endpoint" {
     name                           = "msql-privateendpoint"
     is_manual_connection           = false
   }
+  depends_on = [ azurerm_private_link_service.priv_link_serv ]
 }
