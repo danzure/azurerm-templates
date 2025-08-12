@@ -62,7 +62,7 @@ variable "jumpbox_sku" {
 variable "location" {
   description = "The Azure region where resources will be deployed."
   type        = string
-  default     = "westeurope"
+  default     = "northeurope"
 }
 
 variable "mssql_admin_password" {
