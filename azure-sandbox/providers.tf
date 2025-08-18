@@ -10,21 +10,28 @@ terraform {
     }
   }
 
-  # set the hashicorp HCP terraform organisation + workspace for remote state file
+  # Configure Terraform Cloud for remote state management.
+  # Replace 'danzure-org' with your Terraform Cloud organization name.
   cloud {
-    organization = "danzure-org" # specifiy your own organistation name
+    organization = "danzure-org"
+    
     workspaces {
-      name = "azure-sandbox" # specify your own workspace
+      # Set the workspace name for this environment.
+      name = "azure-sandbox"
+      # Optional tags for workspace organization.
+      tags = [ "Azure" ]
     }
   }
 }
 
+# Configure the AzureRM provider for managing Azure resources.
 provider "azurerm" {
-  # Configuration options for resources
   features {
+    # Enable or customize provider features here if needed.
   }
 }
 
+# Configure the Random provider for generating random values.
 provider "random" {
-
+  
 }
