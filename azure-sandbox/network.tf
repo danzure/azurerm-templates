@@ -140,28 +140,3 @@ resource "azurerm_subnet" "privatelink_snet" {
   virtual_network_name = azurerm_virtual_network.app_vnet.name
   address_prefixes     = var.privlink_snet_address_prefix
 }
-
-# create private link service
-resource "azurerm_private_link_service" "private_link_service" {
-  name                = "privatelink-service"
-  location            = azurerm_resource_group.sandbox_rg.location
-  resource_group_name = azurerm_resource_group.sandbox_rg.name
-  nat_ip_configuration {
-    name      = "nat-ip-configuration"
-    subnet_id = azurerm_subnet.privatelink_snet.id
-    primary   = true
-  }
-}
-
-# create the private endpoint 
-resource "azurerm_private_endpoint" "pe_blob_storage" {
-  name                = "pe-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-001"
-  resource_group_name = azurerm_resource_group.sandbox_rg.name
-  location            = azurerm_resource_group.sandbox_rg.location
-  subnet_id           = azurerm_subnet.privatelink_snet.id
-
-  private_service_connection {
-    name                 = azurerm_private_link_service.priv_link_serv.name
-    is_manual_connection = false
-  }
-}

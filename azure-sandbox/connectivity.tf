@@ -57,17 +57,7 @@ resource "azurerm_virtual_network_peering" "app_vnet_peer" {
   }
 }
 
-resource "azurerm_private_link_service" "priv_link_serv" {
-  name                = "sandbox-privatelink"
-  resource_group_name = azurerm_resource_group.sandbox_rg.name
-  location            = azurerm_resource_group.sandbox_rg.location
-  nat_ip_configuration {
-    name      = "ip-configuration"
-    primary   = true
-    subnet_id = azurerm_subnet.privatelink_snet.id
-  }
-  load_balancer_frontend_ip_configuration_ids = []
-}
+# ================= Private Endpoints =================
 
 # create files private endpoint for storage account
 resource "azurerm_private_endpoint" "sa_files_endpoint" {
@@ -77,9 +67,9 @@ resource "azurerm_private_endpoint" "sa_files_endpoint" {
   subnet_id           = azurerm_subnet.privatelink_snet.id
 
   private_service_connection {
-    private_connection_resource_id = azurerm_private_link_service.priv_link_serv.id
-    name                           = "storage-privateendpointconnection"
+    name                           = "pe-files-storage"
     is_manual_connection           = false
+    
   }
 }
 
@@ -91,8 +81,7 @@ resource "azurerm_private_endpoint" "sa_blob_endpoint" {
   subnet_id           = azurerm_subnet.privatelink_snet.id
 
   private_service_connection {
-    private_connection_resource_id = azurerm_private_link_service.priv_link_serv.id
-    name                           = "blog-privateendpoint"
+    name                           = "pe-blob-storage"
     is_manual_connection           = false
   }
 }
@@ -105,8 +94,7 @@ resource "azurerm_private_endpoint" "mysql_endpoint" {
   subnet_id           = azurerm_subnet.privatelink_snet.id
 
   private_service_connection {
-    private_connection_resource_id = azurerm_private_link_service.priv_link_serv.id
-    name                           = "msql-privateendpoint"
-    is_manual_connection           = false
+    is_manual_connection = false
+    name = "pe-mssql-db"
   }
 }
