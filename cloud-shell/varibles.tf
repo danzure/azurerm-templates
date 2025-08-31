@@ -13,7 +13,7 @@ variable "environment" {
 variable "location" {
   description = "Azure region where resources will be deployed. This value is appended to the resource group name."
   type        = string
-  default     = "uksouth"
+  default     = "westeurope"
 }
 
 variable "resource_tags" {
