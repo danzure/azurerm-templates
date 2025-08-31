@@ -19,13 +19,13 @@ locals {
 }
 
 locals {
-  environment_abbr = {
+  envrionment_abbr = {
     "prod" = "p" # Production envrionment
     "uat"  = "u" # User Acceptance Testing (UAT) envrionment
     "dev"  = "d" # Development envrionment
   }
   # function to generate the abbriviation for the azure region 
   generate_env_name = {
-    envrionment = local.environment_abbr[var.environment]
+    envrionment = local.envrionment_abbr[var.environment]
   }
 }

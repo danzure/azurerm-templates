@@ -1,3 +1,4 @@
+#------------------------Virtual Networks--------------------------#
 # create the 'shared' azure virtual network for azure bastion, azure firewall resources
 resource "azurerm_virtual_network" "shared_vnet" {
   name                = "vnet-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-001"
@@ -5,7 +6,22 @@ resource "azurerm_virtual_network" "shared_vnet" {
   location            = azurerm_resource_group.sandbox_rg.location
   address_space       = var.shared_vnet_address_space
   tags                = var.tags
+
+  depends_on = [azurerm_resource_group.sandbox_rg]
 }
+
+# create the 'application' azure virtual network
+resource "azurerm_virtual_network" "app_vnet" {
+  name                = "vnet-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-002"
+  resource_group_name = azurerm_resource_group.sandbox_rg.name
+  location            = azurerm_resource_group.sandbox_rg.location
+  address_space       = var.app_vnet_address_space
+  tags                = var.tags
+
+  depends_on = [azurerm_resource_group.sandbox_rg]
+}
+
+#-------------------Subnets (Shared VNET)-------------------------#
 
 # create the shared azure subnet 
 resource "azurerm_subnet" "adds_snet" {
@@ -27,6 +43,44 @@ resource "azurerm_subnet" "bastion_subnet" {
   depends_on = [azurerm_virtual_network.shared_vnet]
 }
 
+# create the AzureFirewallSubnet
+resource "azurerm_subnet" "firewall_subnet" {
+  name                 = "AzureFirewallSubnet"
+  resource_group_name  = azurerm_resource_group.sandbox_rg.name
+  virtual_network_name = azurerm_virtual_network.shared_vnet.name
+  address_prefixes     = var.firewall_snet_address_prefix
+
+  depends_on = [azurerm_virtual_network.shared_vnet]
+}
+
+#--------------------Subnets (App VNET)-------------------#
+
+# create the application subnet
+resource "azurerm_subnet" "app_snet" {
+  name                 = "snet-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-001"
+  resource_group_name  = azurerm_resource_group.sandbox_rg.name
+  virtual_network_name = azurerm_virtual_network.app_vnet.name
+  address_prefixes     = var.app_snet_address_prefix
+}
+
+# create the database subnet
+resource "azurerm_subnet" "db_snet" {
+  name                 = "snet-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-002"
+  resource_group_name  = azurerm_resource_group.sandbox_rg.name
+  virtual_network_name = azurerm_virtual_network.app_vnet.name
+  address_prefixes     = var.db_snet_address_prefix
+}
+
+# create the private link subnet
+resource "azurerm_subnet" "privatelink_snet" {
+  name                 = "snet-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-003"
+  resource_group_name  = azurerm_resource_group.sandbox_rg.name
+  virtual_network_name = azurerm_virtual_network.app_vnet.name
+  address_prefixes     = var.privlink_snet_address_prefix
+}
+
+#----------------------Public IP--------------------#
+
 # create a public ip resource for the bastion host
 resource "azurerm_public_ip" "bastion_pip" {
   name                = "pip-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-001"
@@ -38,6 +92,22 @@ resource "azurerm_public_ip" "bastion_pip" {
   allocation_method       = "Static"
   idle_timeout_in_minutes = 10
 }
+
+# create the public ip resource for azure firewall
+resource "azurerm_public_ip" "fw_pip" {
+  name                = "pip-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-002"
+  resource_group_name = azurerm_resource_group.sandbox_rg.name
+  location            = azurerm_resource_group.sandbox_rg.location
+  tags                = var.tags
+
+  sku                     = "Standard" # [Basic, Standard] 
+  allocation_method       = "Static"
+  idle_timeout_in_minutes = 10
+
+  depends_on = [azurerm_virtual_network.shared_vnet]
+}
+
+#------------------Bastion Host--------------------
 
 # create the azure bastion host resource 
 resource "azurerm_bastion_host" "bastion_host" {
@@ -65,29 +135,7 @@ resource "azurerm_bastion_host" "bastion_host" {
   ]
 }
 
-# create the public ip resource for azure firewall
-resource "azurerm_public_ip" "fw_pip" {
-  name                = "pip-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-002"
-  resource_group_name = azurerm_resource_group.sandbox_rg.name
-  location            = azurerm_resource_group.sandbox_rg.location
-  tags                = var.tags
-
-  sku                     = "Standard" # [Basic, Standard] 
-  allocation_method       = "Static"
-  idle_timeout_in_minutes = 10
-
-  depends_on = [azurerm_virtual_network.shared_vnet]
-}
-
-# create the AzureFirewallSubnet
-resource "azurerm_subnet" "firewall_subnet" {
-  name                 = "AzureFirewallSubnet"
-  resource_group_name  = azurerm_resource_group.sandbox_rg.name
-  virtual_network_name = azurerm_virtual_network.shared_vnet.name
-  address_prefixes     = var.firewall_snet_address_prefix
-
-  depends_on = [azurerm_virtual_network.shared_vnet]
-}
+#-----------------Firewall------------------#
 
 # create the azure firewall resource
 resource "azurerm_firewall" "firewall" {
@@ -106,37 +154,23 @@ resource "azurerm_firewall" "firewall" {
   }
 }
 
-# create the 'application' azure virtual network
-resource "azurerm_virtual_network" "app_vnet" {
-  name                = "vnet-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-002"
+#----------------Virtual WAN & Hub-------------------#
+
+# deploy Azure Virtual WAN
+resource "azurerm_virtual_wan" "sandbox_vwan" {
+  name                = "vwan-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-001"
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location            = azurerm_resource_group.sandbox_rg.location
-  address_space       = var.app_vnet_address_space
   tags                = var.tags
 
   depends_on = [azurerm_resource_group.sandbox_rg]
 }
 
-# create the application subnet
-resource "azurerm_subnet" "app_snet" {
-  name                 = "snet-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-001"
-  resource_group_name  = azurerm_resource_group.sandbox_rg.name
-  virtual_network_name = azurerm_virtual_network.app_vnet.name
-  address_prefixes     = var.app_snet_address_prefix
-}
-
-# create the database subnet
-resource "azurerm_subnet" "db_snet" {
-  name                 = "snet-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-002"
-  resource_group_name  = azurerm_resource_group.sandbox_rg.name
-  virtual_network_name = azurerm_virtual_network.app_vnet.name
-  address_prefixes     = var.db_snet_address_prefix
-}
-
-# create the private link subnet
-resource "azurerm_subnet" "privatelink_snet" {
-  name                 = "snet-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-003"
-  resource_group_name  = azurerm_resource_group.sandbox_rg.name
-  virtual_network_name = azurerm_virtual_network.app_vnet.name
-  address_prefixes     = var.privlink_snet_address_prefix
+# deploy Virtual Hub to Azure Virtual WAN
+resource "azurerm_virtual_hub" "sandbox_vhub" {
+  name                = "vhub-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-001"
+  resource_group_name = azurerm_resource_group.sandbox_rg.name
+  location            = azurerm_resource_group.sandbox_rg.location
+  virtual_wan_id      = azurerm_virtual_wan.sandbox_vwan.id
+  address_prefix      = "10.40.0.0/24"
 }

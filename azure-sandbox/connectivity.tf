@@ -1,22 +1,3 @@
-# deploy virtual wan
-resource "azurerm_virtual_wan" "sandbox_vwan" {
-  name                = "vwan-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-001"
-  resource_group_name = azurerm_resource_group.sandbox_rg.name
-  location            = azurerm_resource_group.sandbox_rg.location
-  tags                = var.tags
-
-  depends_on = [azurerm_resource_group.sandbox_rg]
-}
-
-# deploy virtual hub to the virtual wan
-resource "azurerm_virtual_hub" "sandbox_vhub" {
-  name                = "vhub-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-001"
-  resource_group_name = azurerm_resource_group.sandbox_rg.name
-  location            = azurerm_resource_group.sandbox_rg.location
-  virtual_wan_id      = azurerm_virtual_wan.sandbox_vwan.id
-  address_prefix      = "10.40.0.0/24"
-}
-
 resource "azurerm_virtual_hub_connection" "vhub_shared_peer" {
   name                      = "vhub-peerTo-shared-vnet"
   virtual_hub_id            = azurerm_virtual_hub.sandbox_vhub.id
@@ -57,11 +38,11 @@ resource "azurerm_virtual_network_peering" "app_vnet_peer" {
   }
 }
 
-# ================= Private Endpoints =================
+#================= Private Endpoints =================#
 
 # create files private endpoint for storage account
 resource "azurerm_private_endpoint" "sa_files_endpoint" {
-  name                = "files-endpoint"
+  name                = "files-private-endpoint"
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location            = azurerm_resource_group.sandbox_rg.location
   subnet_id           = azurerm_subnet.privatelink_snet.id
@@ -69,13 +50,14 @@ resource "azurerm_private_endpoint" "sa_files_endpoint" {
   private_service_connection {
     name                           = "pe-files-storage"
     is_manual_connection           = false
-    
+    private_connection_resource_id = azurerm_storage_account.sandbox_sa.id
+    subresource_names              = ["file"]
   }
 }
 
 # create blob private endpoint for stroage account
 resource "azurerm_private_endpoint" "sa_blob_endpoint" {
-  name                = "blob-endpoint"
+  name                = "blob-private-endpoint"
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location            = azurerm_resource_group.sandbox_rg.location
   subnet_id           = azurerm_subnet.privatelink_snet.id
@@ -83,18 +65,21 @@ resource "azurerm_private_endpoint" "sa_blob_endpoint" {
   private_service_connection {
     name                           = "pe-blob-storage"
     is_manual_connection           = false
+    private_connection_resource_id = azurerm_storage_account.sandbox_sa.id
+    subresource_names              = ["blob"]
   }
 }
 
 # create mysql private endpoint
 resource "azurerm_private_endpoint" "mysql_endpoint" {
-  name                = "mysql-endpoint"
+  name                = "pe-mssql-db"
   resource_group_name = azurerm_resource_group.sandbox_rg.name
   location            = azurerm_resource_group.sandbox_rg.location
   subnet_id           = azurerm_subnet.privatelink_snet.id
 
   private_service_connection {
-    is_manual_connection = false
-    name = "pe-mssql-db"
+    name                           = "pe-mssql-db"
+    is_manual_connection           = false
+    private_connection_resource_id = azurerm_mssql_database.mssql_db.id
   }
 }
