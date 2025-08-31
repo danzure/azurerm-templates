@@ -40,7 +40,7 @@ resource "azurerm_windows_virtual_machine" "avd_host" {
   os_disk {
     name                 = format("osdisk-${var.prefix}-host-%03d", count.index + 1)
     caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
+    storage_account_type = var.os_disk_type
   }
 
   source_image_reference {
@@ -63,7 +63,7 @@ resource "azurerm_virtual_machine_extension" "avd_host_registration" {
 
   settings = <<-SETTINGS
     {
-      "modulesUrl": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_09-08-2022.zip",
+      "modulesUrl": "${var.avd_registration_modules_url}",
       "configurationFunction": "Configuration.ps1\\AddSessionHost",
       "properties": {
         "HostPoolName":"${azurerm_virtual_desktop_host_pool.avd_vdpool.name}"

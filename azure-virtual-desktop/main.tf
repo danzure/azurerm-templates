@@ -35,7 +35,7 @@ resource "azurerm_virtual_desktop_host_pool" "avd_vdpool" {
 
   load_balancer_type       = "DepthFirst" #[BreadthFirst, DepthFirst]
   type                     = "Pooled"     #[Pooled, Personal]
-  maximum_sessions_allowed = 5
+  maximum_sessions_allowed = var.hostpool_max_sessions
   preferred_app_group_type = "Desktop" #[Desktop, RemoteApp]
 
   scheduled_agent_updates {
