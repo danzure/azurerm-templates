@@ -19,9 +19,9 @@ variable "location" {
 variable "resource_tags" {
   description = "A map of tags to apply to all resource groups created by this module."
   default = {
-    Deployment  = "IaC"
-    Envrionment = "Dev"
-    Workload    = "Terraform"
+    Deployment  = "Terraform"
+    Envrionment = "Development"
+    Workload    = "ms-cloudshell"
   }
 }
 
