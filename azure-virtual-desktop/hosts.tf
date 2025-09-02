@@ -34,7 +34,7 @@ resource "azurerm_windows_virtual_machine" "avd_host" {
   size                  = var.vm_size
   provision_vm_agent    = true
   patch_assessment_mode = "ImageDefault"
-  patch_mode            = var.host_patching_mode
+  patch_mode            = var.host_patch_mode
 
   admin_username = var.admin_username
   admin_password = var.admin_password
