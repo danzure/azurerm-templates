@@ -1,30 +1,30 @@
 variable "admin_password" {
-  description = "The local administrator password for the Azure Virtual Desktop (AVD) session host(s)."
+  description = "Specifies the password for the local administrator account on session hosts."
   type        = string
   default     = "ChangeMe123!"
   sensitive   = true
 }
 
 variable "admin_username" {
-  description = "The local administrator username for the Azure Virtual Desktop (AVD) session host(s)."
+  description = "Specifies the username for the local administrator account on session hosts."
   type        = string
   default     = "azureadmin"
 }
 
 variable "avd_host_registration" {
-  description = "The URL for the AVD host registration PowerShell DSC configuration ZIP file."
+  description = "URL for the PowerShell DSC configuration ZIP file used for AVD host registration."
   type        = string
   default     = "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_02-23-2022.zip"
 }
 
 variable "avd_registration_modules_url" {
-  description = "The URL for the AVD registration DSC modules ZIP file."
+  description = "URL for the DSC modules ZIP file required for AVD host registration."
   type        = string
   default     = "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_09-08-2022.zip"
 }
 
 variable "avd_tags" {
-  description = "A map of tags to apply to all Azure Virtual Desktop resources."
+  description = "Tags applied to all Azure Virtual Desktop resources."
   default = {
     Deployment  = "Terraform"
     Workload    = "AVD"
@@ -33,75 +33,97 @@ variable "avd_tags" {
 }
 
 variable "domain_join_upn" {
-  description = "The username (without domain) for the account used to join AVD hosts to the Active Directory domain."
+  description = "Username (without domain) for the account used to join session hosts to Active Directory."
   type        = string
   default     = "domainjoinuser"
 }
 
 variable "domain_name" {
-  description = "The Active Directory domain name to join the AVD session host(s) to."
+  description = "Active Directory domain name for joining session hosts."
   type        = string
   default     = "hosts.local"
 }
 
 variable "domain_ou_path" {
-  description = "The distinguished name (DN) of the Organizational Unit (OU) where AVD hosts will be joined in Active Directory."
+  description = "Distinguished Name (DN) of the Organizational Unit for joining hosts in Active Directory."
   type        = string
   default     = ""
 }
 
 variable "domain_password" {
-  description = "The password for the domain join account (used to authenticate the domain join operation)."
+  description = "Password for the domain join account used during Active Directory join."
   type        = string
   default     = "ChangeMe123!"
   sensitive   = true
 }
 
 variable "environment" {
-  description = "The deployment environment for the AVD resources. Possible values: dev, uat, prod."
+  description = "Deployment environment for resources (e.g., dev, uat, prod)."
   type        = string
   default     = "dev"
 }
 
 variable "fsl_quota" {
-  description = "The storage quota (in GB) for the FSLogix file share."
+  description = "Storage quota in GB for the FSLogix file share."
   default     = "5"
 }
 
+variable "host_disk_size" {
+  description = "OS disk size in GB for session hosts."
+  type        = string
+  default     = "128"
+}
+
+variable "host_patch_mode" {
+  description = "Specifies the patching mode for session hosts: Manual, AutomaticByOS, or AutomaticByPlatform."
+  type        = string
+  default     = "Manual"
+}
+
+variable "host_pool_balancer_type" {
+  description = "Load balancer type for the host pool (e.g., DepthFirst, BreadthFirst)."
+  default     = "DepthFirst"
+}
+
+variable "host_pool_type" {
+  description = "Type of host pool (e.g., Pooled, Personal)."
+  default     = "Pooled"
+}
+
 variable "hostpool_max_sessions" {
-  description = "The maximum number of user sessions allowed per AVD session host in the host pool."
+  description = "Maximum number of user sessions allowed per session host."
   default     = "5"
 }
 
 variable "instance_number" {
-  description = "The instance number for resource naming (e.g., 001, 002). Appended to resource names for uniqueness."
+  description = "Instance number appended to resource names for uniqueness."
   type        = string
   default     = "001"
 }
 
 variable "location" {
-  description = "The Azure region where resources will be deployed (e.g., uksouth, eastus)."
+  description = "Azure region for resource deployment (e.g., uksouth, eastus)."
   type        = string
   default     = "uksouth"
 }
 
 variable "log_analytics_retention" {
-  description = "The retention period (in days) for Log Analytics workspace data."
+  description = "Retention period in days for Log Analytics workspace data."
   default     = "30"
 }
 
 variable "log_analytics_sku" {
-  description = "The SKU for the Log Analytics workspace. Possible values: PerGB2018, Premium, Standard."
+  description = "SKU for the Log Analytics workspace (e.g., PerGB2018, Premium, Standard)."
   default     = "PerGB2018"
 }
 
 variable "msix_quota" {
-  description = "The storage quota (in GB) for the MSIX app attach file share."
+  description = "Storage quota in GB for the MSIX app attach file share."
   default     = "5"
 }
 
 variable "network_tags" {
-  description = "A map of tags to apply to network infrastructure resources."
+  description = "Tags applied to network infrastructure resources."
   default = {
     Deployment  = "Terraform"
     Workload    = "Infrastructure"
@@ -110,41 +132,41 @@ variable "network_tags" {
 }
 
 variable "network_workload" {
-  description = "The workload or application name used for naming network resources."
+  description = "Workload or application name used for naming network resources."
   type        = string
   default     = "infra"
 }
 
 variable "os_disk_type" {
-  description = "The storage account type for the OS disk of the AVD session host(s) (e.g., Standard_LRS, Premium_LRS)."
+  description = "Storage account type for the OS disk of session hosts (e.g., Standard_LRS, Premium_LRS)."
   default     = "Standard_LRS"
 }
 
 variable "prefix" {
-  description = "The prefix used in the naming of AVD session host(s) and related resources."
+  description = "Prefix used in naming session hosts and related resources."
   type        = string
   default     = "avdtf"
 }
 
 variable "rdsh_count" {
-  description = "The number of Remote Desktop Session Hosts (RDSH) to deploy for the AVD environment."
+  description = "Number of Remote Desktop Session Hosts (RDSH) to deploy."
   type        = number
   default     = 1
 }
 
 variable "rfc3339time" {
-  description = "The expiration date and time (RFC3339 format) for the AVD host registration token."
+  description = "Expiration date and time for the host registration token (RFC3339 format)."
   default     = "2025-07-20T23:40:52Z"
 }
 
 variable "snet_address_prefix" {
-  description = "The IP address prefix (CIDR) for the AVD subnet."
+  description = "IP address prefix (CIDR) for the subnet."
   type        = string
   default     = "10.10.0.0/24"
 }
 
 variable "storage_account_tags" {
-  description = "A map of tags to apply to storage accounts used by AVD."
+  description = "Tags applied to storage accounts used by AVD."
   default = {
     Workload   = "FSLogix"
     Deployment = "Terraform"
@@ -152,25 +174,25 @@ variable "storage_account_tags" {
 }
 
 variable "vm_size" {
-  description = "The Azure VM size for the AVD session host(s) (e.g., Standard_B2s)."
+  description = "Azure VM size for session hosts (e.g., Standard_B2s)."
   type        = string
   default     = "Standard_B2s"
 }
 
 variable "vnet_address_space" {
-  description = "The IP address space (CIDR) for the virtual network."
+  description = "IP address space (CIDR) for the virtual network."
   type        = string
   default     = "10.10.0.0/22"
 }
 
 variable "workload" {
-  description = "The workload or application name for Azure Virtual Desktop resources."
+  description = "Workload or application name for resources."
   type        = string
   default     = "tfavd"
 }
 
 variable "workspace_friendly_name" {
-  description = "The friendly display name for the Azure Virtual Desktop workspace."
+  description = "Friendly display name for the workspace."
   type        = string
   default     = "Terraform AVD"
 }

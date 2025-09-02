@@ -33,8 +33,8 @@ resource "azurerm_network_security_group" "avd_nsg" {
   resource_group_name = azurerm_resource_group.avd_rg.name
   location            = azurerm_resource_group.avd_rg.location
 
-  name       = "nsg-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-${var.instance_number}"
-  tags       = var.avd_tags
+  name = "nsg-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-${var.instance_number}"
+  tags = var.avd_tags
 }
 
 # associate the Network Security Group (NSG) to the azure virtual desktop subnet
@@ -74,8 +74,8 @@ resource "azurerm_public_ip_prefix" "ngw_ippre" {
   resource_group_name = azurerm_resource_group.avd_rg.name
   location            = azurerm_resource_group.avd_rg.location
 
-  name       = "ippre-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-${var.instance_number}"
-  tags       = var.avd_tags
+  name = "ippre-${format("%s", local.generate_env_name.envrionment)}-${var.workload}-${format("%s", local.generate_loc_name.location)}-${var.instance_number}"
+  tags = var.avd_tags
 }
 
 # create a NAT Gateway for outbound internet connectivity
