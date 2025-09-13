@@ -76,7 +76,6 @@ variable "host_disk_size" {
 
 variable "host_patch_mode" {
   description = "Specifies the patching mode for session hosts: Manual, AutomaticByOS, or AutomaticByPlatform."
-  type        = string
   default     = "Manual"
 }
 
@@ -156,7 +155,7 @@ variable "rdsh_count" {
 
 variable "rfc3339time" {
   description = "Expiration date and time for the host registration token (RFC3339 format)."
-  default     = "2025-07-20T23:40:52Z"
+  default     = "2025-09-20T23:40:52Z"
 }
 
 variable "snet_address_prefix" {

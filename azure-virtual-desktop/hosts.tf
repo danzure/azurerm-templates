@@ -33,6 +33,7 @@ resource "azurerm_windows_virtual_machine" "avd_host" {
   network_interface_ids = [azurerm_network_interface.host_nic.*.id[count.index]]
   size                  = var.vm_size
   provision_vm_agent    = true
+  automatic_updates_enabled = false
   patch_assessment_mode = "ImageDefault"
   patch_mode            = var.host_patch_mode
 
