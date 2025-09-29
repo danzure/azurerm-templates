@@ -59,10 +59,16 @@ variable "jumpbox_sku" {
   default     = "Standard_F2"
 }
 
+variable "keyvault_sku" {
+  description = "The Azure Key Vault SKU to use"
+  type = string
+  default = "standard"
+}
+
 variable "location" {
   description = "The Azure region where resources will be deployed."
   type        = string
-  default     = "eastus"
+  default     = "uksouth"
 }
 
 variable "mssql_admin_password" {

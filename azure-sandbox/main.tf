@@ -20,7 +20,7 @@ resource "azurerm_key_vault" "sandbox_kv" {
   resource_group_name        = azurerm_resource_group.sandbox_rg.name
   location                   = azurerm_resource_group.sandbox_rg.location
   tenant_id                  = data.azurerm_client_config.current.tenant_id
-  sku_name                   = "standard" # [standard, premium]
+  sku_name                   = var.keyvault_sku
   purge_protection_enabled   = false
   soft_delete_retention_days = 7
 }
